@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 import config from './config/environment';
 
-export default async () => {
+export default async function() {
   mongoose.Promise = global.Promise;
 
   try {

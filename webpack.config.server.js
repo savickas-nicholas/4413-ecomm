@@ -7,12 +7,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = function(env) {
 
-  const envVariables = {
-    'process.env': {
-      'NODE_ENV': JSON.stringify(env.env),
-    }
-  }
-
   const plugins = [
     //new webpack.DefinePlugin(envVariables),
     new CopyWebpackPlugin([
@@ -33,7 +27,7 @@ module.exports = function(env) {
     entry: {
       server: [
         path.resolve(__dirname, 'polyfills'),
-        path.join(__dirname, 'src/server/app.js'),
+        path.join(__dirname, 'src/server/index.js'),
       ]
     },
     output: {

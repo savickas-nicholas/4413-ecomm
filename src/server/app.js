@@ -1,12 +1,10 @@
 
 import Express from 'express';
-import { Server } from 'http';
 
-import config from './config/environment';
+import configureExpress from './express';
+import registerRoutes from './routes';
 
 const app = new Express();
-const server = Server(app);
-
 
 if (process.env.NODE_ENV === 'development') {
   console.log(`loading dev middleware`);
@@ -26,31 +24,12 @@ if (process.env.NODE_ENV === 'development') {
   app.use(webpackHotMiddleware(compiler));
 }
 
-console.log(`node_env --> ${process.env.NODE_ENV}`);
+// configure express
+configureExpress(app);
 
-
-
-/* MongoDB */
-
-require('./db').default();
-
-
-require('./express').default(app);
-require('./routes').default(app);
-
-
-server.listen(config.port, (error) => {
-  if(!error) {
-    console.log(`Express is running on port ${config.port}`);
-  }
-});
+// attach APIs
+registerRoutes(app);
 
 export default app;
-
-/* Firebase */
-
-// const {onRequest} = require("firebase-functions/v2/https");
-
-// exports.app = onRequest(app);
 
 

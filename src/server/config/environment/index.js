@@ -1,5 +1,3 @@
-'use strict';
-
 import path from 'path';
 import _ from 'lodash';
 
@@ -50,4 +48,4 @@ let all = {
 
 
 // combine generic config with env-specific config
-export default _.merge(all, require(`./${process.env.NODE_ENV}.js`) || {});
+export default _.merge(all, require(`./${process.env.NODE_ENV}.js`).default || {});

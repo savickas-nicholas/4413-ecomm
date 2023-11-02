@@ -1,10 +1,10 @@
 
-const path = require('path');
+import path from 'path';
 import secrets from '../secrets';
 
 // Production specific configuration
 // =================================
-module.exports = {
+export default {
   // Server IP ??
   ip:       process.env.IP ||
             undefined,

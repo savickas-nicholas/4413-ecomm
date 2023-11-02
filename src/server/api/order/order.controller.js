@@ -12,7 +12,6 @@ export const getOrders = async (req, res) => {
   try {
     const orders = await Order.find(req.query)
       .sort({createdAt: 'asc'});
-    
     return res.status(200).json({ orders });
   } catch(err) {
     return handleError(res, err);
@@ -27,7 +26,6 @@ export const getOrderById = async (req, res) => {
       .populate({
         path: 'products',
       });
-    
     return res.status(200).json({ order });
   } catch(err) {
     return handleError(res, err);

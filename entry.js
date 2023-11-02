@@ -7,6 +7,6 @@ if(process.env.NODE_ENV === 'production') {
 } else {
   require('@babel/register');
   require('@babel/polyfill'); //basically for generators
-  require('./src/server/app.js');
+  require('./src/server/index.js');
 }
 
