@@ -1,90 +1,66 @@
+import jwt from 'jsonwebtoken';
 
-import _ from 'lodash';
+import { getAllVehicles, 
+  getVehicle as getVehicleService, 
+  addNewVehicle, 
+  removeVehicle as removeVehicleService 
+} from './vehicle.service';
 
-import Vehicle from './vehicle.model';
-
-
-/* Search for users */
+// Search for the catalog of vehicles
+// Filtering, sorting, etc. will be done on the client with this list of vehicles
 export const getVehicles = async (req, res) => {
-  console.log('getUsers query --> ', req.query);
   let query = req.query || {};
 
-  // build query
-
-
-
-  // sorting 
-
-
-
   try {
-    const count = await User.count(query);
-    const users = await User.find(query)
-                    .select('-salt -hashedPassword -provider');
-    return res.status(200).json({ users, count });
+    const vehicles = await getAllVehicles(query);
+    return res.status(200).json({ vehicles });
   } catch(err) {
     return handleError(res, err);
   }
 };
 
+// Search the catalog for a vehicle
+export const getVehicle = async (req, res) => {
+  let vehicleId = req.params.id;
 
-/* get all data for one user */
-export const getVehicle = (req, res) => {
-  User.findById(req.params.id)
-    .select('-salt -hashedPassword -provider')
-    .populate({
-      path: 'profile',
-      populate: {
-        path: 'image'
-      }
-    })
-    .then((user) => {
-      return res.status(200).json({ user });
+  getVehicleService(vehicleId)
+    .then((vehicle) => {
+      res.status(200).json({ vehicle });
     })
     .catch(err => handleError(res, err))
-};
+}
 
-
-/* Used to create a new database entry for a User (also returns JWT for auth)
-*  Password
-*  Name
-*  Email
-*/
+// Add a new vehicle
 export const addVehicle = async (req, res) => {
-  /* should perform validation of 'req.body' fields (e.g. must have Name/Email/Password) */
-
-
-  
   try {
-    let count = await User.count();
-    let userObj = {
-      provider: 'local',
-      role: 'user'
-    };
-    if(count < 1) {
-      userObj.role = 'admin';
-    };
-    let newUser = _.merge(userObj, req.body);
-    console.log('newUser --> ', newUser);
-    let user = await User.create(newUser);
-    console.log('user --> ', user);
-    let token = jwt.sign({_id: user._id }, config.secrets.session, { expiresIn: '5h' });
-    return res.status(201).json({ token, user });
+    const tokenObj = req.body.token;
+    const vehicleObj = req.body.vehicle;
+
+    const decoder = jwt.verify(tokenObj, config.secrets.session)
+    const userId = decoder._id;
+
+    let vehicle = await addNewVehicle(userId, vehicleObj);
+    return res.status(201).json({ vehicle });
   } catch(err) {
     console.log(err);
     return res.status(500).send(err);
   }
 };
 
-/* delete a User */
-export const deleteVehicle = (req, res) => {
-  User.findOneAndRemove({_id: req.params._id})
-  .then((user) => {
-    return res.status(200).end();
+// Delete existing vehicle
+export const removeVehicle = (req, res) => {
+  const vehicleId = req.params.id;
+  const numRemoved = req.params.count;
+  removeVehicleService(vehicleId, numRemoved)
+  .then((vehicle) => {
+    return res.status(200).json({ vehicle });
   }).catch((err) => res.status(500).send(err))
 };
 
-
+// Recommend vehicle based off of form data
+export const recommendVehicle = (req, res) => {
+  
+}
 
 function handleError(res, err) {
   console.log('user handleError --> ', err);

@@ -1,13 +1,15 @@
-
+//const Factory = require('rosie').Factory;
 import { Factory } from 'rosie'; 
 
-const UserFactory = new Factory()
+const VehicleFactory = new Factory()
   .sequence('id')
-  .attr('name', ['id'], function(i) { return 'user' + i; })
-  .attr('email', ['id'], function(i) { return 'user' + i + '@example.com'; })
-  .attr('password', 'password')
-  .attr('role', 'user')
-  //.attr('displayPicture', ???)
-  //.attr('groups', ???)
+  .attr('name', ['id'], function(i) { return 'vehicle' + i; })
+  .attr('description', ['id'], function(i) { return 'vehicle' + i; })
+  .attr('brand', ['id'], function(i) { return 'vehicle' + i; })
+  .attr('model', ['id'], function(i) { return 'vehicle' + i; })
+  .attr('year', 2020)
+  .attr('quantity', 10)
+  .attr('price', 10000.0)
+  .attr('activedeal', true)
 
-export default UserFactory;
+export default VehicleFactory;
