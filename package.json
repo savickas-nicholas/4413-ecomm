@@ -16,8 +16,7 @@
     "build": "npm run clean && npm run build-client && npm run build-server",
     "start:prod": "cross-env NODE_ENV=production GOOGLE_APPLICATION_CREDENTIALS=./service_account.json node ./entry.js",
     "prod": "npm run clean && npm run build && npm run start:prod",
-    "deploy": "firebase deploy --only functions",
-    "test": "cross-env NODE_ENV=test jest --testTimeout=5000"
+    "deploy": "firebase deploy --only functions"
   },
   "author": "Nicholas Savickas",
   "license": "ISC",
