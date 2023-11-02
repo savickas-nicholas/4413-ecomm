@@ -1,13 +1,14 @@
 
 import path from 'path';
 
-
 import userRoutes from './api/user/user.routes';
+import orderRoutes from './api/order/order.routes';
 
 import authRoutes from './auth/auth.routes';
 
-export default function(app) {
-  //app.use('/api/users', userRoutes);
+export default (app) => {
+  app.use('/api/users', userRoutes);
+  app.use('/api/orders', orderRoutes);
   
   app.use('/auth', authRoutes);
   

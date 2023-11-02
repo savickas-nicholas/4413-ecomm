@@ -6,7 +6,7 @@ import request from 'supertest';
 
 // WORKING
 describe('GET /api/orders', function() {
-  it('should respond with JSON array', function(done) {
+  it('should respond with JSON array', async (done) => {
     request(app)
       .get('/api/orders')
       .expect('Content-Type', /json/)

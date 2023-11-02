@@ -1,7 +1,6 @@
 
 import Express from 'express';
 import { Server } from 'http';
-import mongoose from 'mongoose';
 
 import config from './config/environment';
 
@@ -33,16 +32,7 @@ console.log(`node_env --> ${process.env.NODE_ENV}`);
 
 /* MongoDB */
 
-mongoose.Promise = global.Promise;
-
-mongoose.connect(config.mongo.uri)
-  .then(() => {
-    console.log('Connected to MongoDB');
-  })
-  .catch((error) => {
-    console.error('Please make sure Mongodb is installed and running!'); // eslint-disable-line no-console
-    throw error;
-  })
+require('./db').default();
 
 
 require('./express').default(app);

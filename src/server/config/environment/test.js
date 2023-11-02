@@ -6,5 +6,8 @@ module.exports = {
     uri: 'mongodb://127.0.0.1/ecommerce-test'
   },
 
+  // Server port
+  port:     null,
+
   seedDB: false
 };

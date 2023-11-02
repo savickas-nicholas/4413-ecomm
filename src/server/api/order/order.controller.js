@@ -55,7 +55,7 @@ export const addOrder = async (req, res) => {
 };
 
 /* delete an Order */
-export const deleteOrder = (req, res) => {
+export const deleteOrder = async (req, res) => {
   try {
     await Order.findOneAndRemove({_id: req.params.id});
     return res.status(200).end();
