@@ -3,7 +3,7 @@
 // Test specific configuration
 module.exports = {
   mongo: {
-    uri: 'mongodb://localhost/myReact-test'
+    uri: 'mongodb://127.0.0.1/ecommerce-test'
   },
 
   seedDB: false

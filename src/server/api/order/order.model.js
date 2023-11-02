@@ -1,29 +1,43 @@
 
-import crypto from 'crypto';
-
-const authTypes = ['github', 'twitter', 'facebook', 'google'];
-
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-export const UserSchema = new Schema({
-  name: {
-    type: String,
+
+const statuses = ['Pending', 'Confirmed', 'Shipped', 'Out for Delivery', 'Delivered'];
+
+export const OrderSchema = new Schema({
+
+  price: {
+    type: Number,
     required: true
   },
-
-  email: {
+  deliveryDate: {
+    type: Date, 
+    required: true
+  },
+  deliveryAddress: {
+    type: String, 
+    required: true
+  },
+  paymentToken: {
+    type: String, 
+    required: true
+  },
+  status: {
     type: String,
-    lowercase: true,
-    match: [/[A-Za-z0-9]+@([A-Za-z])+(\.[A-Za-z]+)+/, "This email address is not in the correct format. Please enter an email address in the following format: 'example@example.com'."],
+    default: 'Pending'
   },
 
-  // Authentication
-  hashedPassword: String,
-  provider: String,
-  role: String,
-  salt: String,
-});
+  products: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Vehicle'
+  }],
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }, 
+
+}, { timestamps: true });
 
 /**
  * Validations
@@ -144,4 +158,4 @@ UserSchema
 
 UserSchema.set('toJSON',  { virtuals: true });
 
-export default mongoose.model('User', UserSchema);
+export default mongoose.model('Order', OrderSchema);
