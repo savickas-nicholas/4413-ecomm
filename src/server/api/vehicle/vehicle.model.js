@@ -3,9 +3,16 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 // Litres per km or miles per gallon
-const units = ['km', 'mpg']
+const units = ['km', 'mpg'];
 
-export const vehicleSchema = new Schema({
+const CustomizationSchema = new Schema({
+    condition: { type: String, default: '' },
+    colour: { type: String, default: '' },
+    trim: { type: String, default: '' },
+    engine: { type: String, default: '' }
+});
+
+export const VehicleSchema = new Schema({
     name: { type: String },
     description: { type: String },
     brand: { type: String },
@@ -17,17 +24,15 @@ export const vehicleSchema = new Schema({
     milesUnits: { type: String, default: "km" },
     activeDeal: { type: Boolean, default: false },
     customizations: {
-        condition: { type: String, default: '' },
-        colour: { type: String, default: '' },
-        trim: { type: String, default: '' },
-        engine: { type: String, default: '' }
+        type: CustomizationSchema, 
+        default: () => ({})
     }
-})
+});
 
-vehicleSchema.path('milesUnits').validate(
+VehicleSchema.path('milesUnits').validate(
     (milesUnits) => {
         return units.indexOf[milesUnits] != -1;
     }
-)
+);
 
 export default mongoose.model('Vehicle', vehicleSchema);

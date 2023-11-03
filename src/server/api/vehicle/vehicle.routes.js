@@ -6,5 +6,6 @@ router.get('/', controller.getVehicles);
 router.get('/:id', controller.getVehicle);
 router.post('/', controller.addVehicle);
 router.delete('/:id/:count', controller.removeVehicle);
+router.post('/recommendation', controller.recommendVehicle);
 
 export default router;
