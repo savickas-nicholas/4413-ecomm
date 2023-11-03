@@ -30,4 +30,4 @@ vehicleSchema.path('milesUnits').validate(
     }
 )
 
-export default mongoose.model("Vehicle", vehicleSchema)
+export default mongoose.model('Vehicle', vehicleSchema);

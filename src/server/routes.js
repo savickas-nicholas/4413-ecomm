@@ -7,6 +7,7 @@ import vehicleRoutes from './api/vehicle/vehicle.routes';
 
 import authRoutes from './auth/auth.routes';
 
+// register HTTP endpoints
 export default function(app) {
   app.use('/api/users', userRoutes);
   app.use('/api/orders', orderRoutes);

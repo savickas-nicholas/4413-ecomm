@@ -6,6 +6,7 @@ import registerRoutes from './routes';
 
 const app = new Express();
 
+// compile with webpack with HMR
 if (process.env.NODE_ENV === 'development') {
   console.log(`loading dev middleware`);
 

@@ -1,89 +1,90 @@
-"use strict"
 
 let { describe, it, expect } = global;
+
+import * as db from '../../config/testing/testDb';
 
 import Vehicle from './vehicle.model';
 import VehicleFactory from './vehicle.factory';
 
+
 describe('Vehicle Model', function() {
     let mockVehicle;
     
-    beforeAll(function(done) {
-        Vehicle.remove({}, () => done());
-    });
-  
-    beforeEach(function(done) {
-        mockVehicle = new Vehicle(VehicleFactory.build());
-        done();
-    });
-  
-    afterEach(function(done) {
-        Vehicle.remove({}, () => done());
+    beforeAll(async () => {
+        await db.connect();
+        await Vehicle.deleteMany({}); 
     });
 
-    it('should begin with no vehicles', function(done) {
-        Vehicle.find({}, function(err, vehicles) {
-            expect(vehicles.length).toEqual(0);
-            done();
-        });
+    afterAll(async () => {
+        await db.closeDatabase();
+    })
+  
+    beforeEach(async () => {
+        mockVehicle = new Vehicle(VehicleFactory.build());
+    });
+  
+    afterEach(async () => {
+        await Vehicle.deleteMany({}); 
+    });
+
+    // tests
+
+    it('should begin with no vehicles', async () => {
+        let vehicles = await Vehicle.find({});
+        expect(vehicles.length).toEqual(0);
     });
     
-    it('should create a vehicle', function(done) {
-        Vehicle.create(mockVehicle, function(err, vehicle) {
-            if(err) done(err);
-            expect(vehicle).toBeTruthy();
-            done();
-        })
+    it('should create a vehicle', async () => {
+        let vehicle = await Vehicle.create(mockVehicle);
+        expect(vehicle).toBeTruthy();
     });
     
-    it('should fail to create a vehicle with negative price', function(done) {
+    it('should fail to create a vehicle with negative price', async () => {
         mockVehicle.price = -1.0;
-        Vehicle.create(mockVehicle, function(err) {
+        try {
+            let vehicle = await Vehicle.create(mockVehicle);
+        } catch(err) {
             expect(err).toBeTruthy();
-            done();
-        })
+        }
     });
     
-    it('should fail to create a vehicle with negative quantity', function(done) {
+    it('should fail to create a vehicle with negative quantity', async () => {
         mockVehicle.quantity = -1;
-        Vehicle.create(mockVehicle, function(err) {
+        try {
+            let vehicle = await Vehicle.create(mockVehicle);
+        } catch(err) {
             expect(err).toBeTruthy();
-            done();
-        })
+        }
     });
     
-    it('should fail to create a vehicle with negative mileage', function(done) {
+    it('should fail to create a vehicle with negative mileage', async () => {
         mockVehicle.miles = -1.0;
-        Vehicle.create(mockVehicle, function(err) {
+        try {
+            let vehicle = await Vehicle.create(mockVehicle);
+        } catch(err) {
             expect(err).toBeTruthy();
-            done();
-        })
+        }
     });
     
-    it('should fail to create a vehicle with wrong mileage units', function(done) {
+    it('should fail to create a vehicle with wrong mileage units', async () => {
         mockVehicle.milesUnits = "mm";
-        Vehicle.create(mockVehicle, function(err) {
+        try {
+            let vehicle = await Vehicle.create(mockVehicle);
+        } catch(err) {
             expect(err).toBeTruthy();
-            done();
-        })
+        }
     });
     
-    it('should create vehicle with default mileage', function(done) {
-        Vehicle.create(mockVehicle, function(err, vehicle) {
-            if(err) done(err);
-            expect(vehicle.miles).toEqual(0);
-            expect(vehicle.milesUnits).toEqual('km');
-            done();
-        })
+    it('should create vehicle with default mileage', async () => {
+        let vehicle = await Vehicle.create(mockVehicle);
+        expect(vehicle.miles).toEqual(0);
+        expect(vehicle.milesUnits).toEqual('km');
     });
     
-    it('should create vehicle with default customizations', function(done) {
-        Vehicle.create(mockVehicle, function(err, vehicle) {
-            if(err) done(err);
-            for (const customization in vehicle.customizations) {
-                expect(customization === '').toBeTruthy();
-            }
-            done();
-        })
+    it('should create vehicle with default customizations', async () => {
+        let vehicle = await Vehicle.create(mockVehicle);
+        for (const customization in vehicle.customizations) {
+            expect(customization === '').toBeTruthy();
+        }
     });
 })

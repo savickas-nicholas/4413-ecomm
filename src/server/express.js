@@ -10,6 +10,7 @@ import cookieParser from 'cookie-parser';
 
 import config from './config/environment';
  
+// configure Express middleware
 export default async function(app) { 
   let env = app.get('env'); 
   

@@ -17,6 +17,7 @@ import startDb from './db';
 
 import config from './config/environment';
 
+// run the server (currently local)
 const startup = async () => {
   try {
     const server = Server(app);

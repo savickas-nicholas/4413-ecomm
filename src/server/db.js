@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 
 import config from './config/environment';
 
+// connect to MongoDB
 export default async function() {
   mongoose.Promise = global.Promise;
 
