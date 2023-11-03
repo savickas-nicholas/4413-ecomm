@@ -3,7 +3,8 @@ import jwt from 'jsonwebtoken';
 import { getAllVehicles, 
   getVehicle as getVehicleService, 
   addNewVehicle, 
-  removeVehicle as removeVehicleService 
+  removeVehicle as removeVehicleService,
+  recommendVehicle as recommendVehicleService
 } from './vehicle.service';
 
 // Search for the catalog of vehicles
@@ -58,8 +59,11 @@ export const removeVehicle = (req, res) => {
 };
 
 // Recommend vehicle based off of form data
-export const recommendVehicle = (req, res) => {
-  
+export const recommendVehicle = async (req, res) => {
+  const { price, year, brand, miles, milesUnits } = req.body;
+
+  const recommendedVehicles = await recommendVehicleService(price, year, brand, miles, milesUnits);
+  return recommendedVehicles;
 }
 
 function handleError(res, err) {

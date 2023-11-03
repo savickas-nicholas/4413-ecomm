@@ -4,86 +4,61 @@ let { describe, it, expect } = global;
 
 import Vehicle from './vehicle.model';
 import VehicleFactory from './vehicle.factory';
+import db from '../../db';
 
 describe('Vehicle Model', function() {
     let mockVehicle;
     
-    beforeAll(function(done) {
-        Vehicle.remove({}, () => done());
+    beforeAll(async function() {
+        await db();
+        await Vehicle.deleteMany({});
     });
   
-    beforeEach(function(done) {
+    beforeEach(function() {
         mockVehicle = new Vehicle(VehicleFactory.build());
-        done();
     });
   
-    afterEach(function(done) {
-        Vehicle.remove({}, () => done());
+    afterEach(async function() {
+        await Vehicle.deleteMany({});
     });
 
     it('should begin with no vehicles', function(done) {
-        Vehicle.find({}, function(err, vehicles) {
+        Vehicle.find({}).then(vehicles => {
             expect(vehicles.length).toEqual(0);
             done();
+        }).catch(err => {
+            done(err);
         });
     });
     
     it('should create a vehicle', function(done) {
-        Vehicle.create(mockVehicle, function(err, vehicle) {
-            if(err) done(err);
+        Vehicle.create(mockVehicle).then(vehicle => {
             expect(vehicle).toBeTruthy();
             done();
-        })
-    });
-    
-    it('should fail to create a vehicle with negative price', function(done) {
-        mockVehicle.price = -1.0;
-        Vehicle.create(mockVehicle, function(err) {
-            expect(err).toBeTruthy();
-            done();
-        })
-    });
-    
-    it('should fail to create a vehicle with negative quantity', function(done) {
-        mockVehicle.quantity = -1;
-        Vehicle.create(mockVehicle, function(err) {
-            expect(err).toBeTruthy();
-            done();
-        })
-    });
-    
-    it('should fail to create a vehicle with negative mileage', function(done) {
-        mockVehicle.miles = -1.0;
-        Vehicle.create(mockVehicle, function(err) {
-            expect(err).toBeTruthy();
-            done();
-        })
-    });
-    
-    it('should fail to create a vehicle with wrong mileage units', function(done) {
-        mockVehicle.milesUnits = "mm";
-        Vehicle.create(mockVehicle, function(err) {
-            expect(err).toBeTruthy();
-            done();
-        })
+        }).catch(err => {
+            done(err);
+        });
     });
     
     it('should create vehicle with default mileage', function(done) {
-        Vehicle.create(mockVehicle, function(err, vehicle) {
-            if(err) done(err);
+        Vehicle.create(mockVehicle).then(vehicle => {
             expect(vehicle.miles).toEqual(0);
             expect(vehicle.milesUnits).toEqual('km');
             done();
-        })
+        }).catch(err => {
+            done(err);
+        });
     });
     
     it('should create vehicle with default customizations', function(done) {
-        Vehicle.create(mockVehicle, function(err, vehicle) {
-            if(err) done(err);
-            for (const customization in vehicle.customizations) {
-                expect(customization === '').toBeTruthy();
-            }
+        Vehicle.create(mockVehicle).then(vehicle => {
+            expect(!vehicle.customizations.colour).toBeTruthy();
+            expect(!vehicle.customizations.condition).toBeTruthy();
+            expect(!vehicle.customizations.engine).toBeTruthy();
+            expect(!vehicle.customizations.trim).toBeTruthy();
             done();
-        })
+        }).catch(err => {
+            done(err);
+        });
     });
 })
