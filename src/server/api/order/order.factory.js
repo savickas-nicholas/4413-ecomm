@@ -1,13 +1,13 @@
-//const Factory = require('rosie').Factory;
+
 import { Factory } from 'rosie'; 
 
-const UserFactory = new Factory()
-  .sequence('id')
-  .attr('name', ['id'], function(i) { return 'user' + i; })
-  .attr('email', ['id'], function(i) { return 'user' + i + '@example.com'; })
-  .attr('password', 'password')
-  .attr('role', 'user')
-  //.attr('displayPicture', ???)
-  //.attr('groups', ???)
+const OrderFactory = new Factory()
+  .sequence('k')
+  .attr('price', ['k'], function(i) { return 1000 + i; })
+  .attr('deliveryDate', Date.now())
+  .attr('deliveryAddress', '4700 Keele St, Toronto, ON M3J 1P3')
+  .attr('paymentToken', 'sdfsdfghdfgdfg')
+  .attr('vehicles')
+  .attr('user')
 
-export default UserFactory;
+export default OrderFactory;

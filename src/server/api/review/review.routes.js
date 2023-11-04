@@ -4,10 +4,10 @@ import * as auth from '../../auth/auth.service';
 
 const router = new Router();
 
-router.get('/', controller.index);
-router.get('/:id', controller.show);
-router.post('/', auth.isAuthenticated(), controller.create);
-router.put('/:id', auth.isAuthenticated(), controller.update);
-router.delete('/:id', auth.isAuthenticated(), controller.destroy);
+router.get('/', controller.searchReviews);
+router.get('/:id', controller.getReview);
+router.post('/', auth.isAuthenticated(), controller.createReview);
+router.put('/:id', auth.isAuthenticated(), controller.updateReview);
+router.delete('/:id', auth.isAuthenticated(), controller.deleteReview);
 
 export default router;

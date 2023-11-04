@@ -29,7 +29,7 @@ export const UserSchema = new Schema({
  * Validations
  */
 
-// Validate empty email without using 'required: true' (which would fail when using OAuth)
+// validate empty email without using 'required: true' (which would fail when using OAuth)
 UserSchema
   .path('email')
   .validate(function(email) {
@@ -37,68 +37,43 @@ UserSchema
     return email.length;
   }, 'Email cannot be blank');
 
-// Validate empty password without using 'required: true' (which would fail when using OAuth)
+// validate empty password without using 'required: true' (which would fail when using OAuth)
 UserSchema
   .path('hashedPassword')
   .validate(function(hashedPassword) {
     if (authTypes.indexOf(this.provider) !== -1) return true; // always returns 'true' if using OAuth
-    return hashedPassword.length;
+    return hashedPassword && hashedPassword.length > 0;
   }, 'Password cannot be blank');
 
-// Validate email is not taken
+// validate email is not taken
 UserSchema
   .path('email')
-  .validate(function(email) {
-    //console.log('email --> ', email);
-    mongoose.model('User')
-      .findOne({email: email})
-      .then((user) => {
-        const outcome = !user;
-        //console.log('validation outcome --> ', outcome);
-        return outcome;
-      }).catch((err) => {
-        throw err;
-      });
+  .validate(async (email) => {
+    try {
+      let user = await mongoose.model('User').findOne({email: email});
+      return !user;
+    } catch(err) {
+      throw err;
+    }
 }, 'The specified email address is already in use.');
 
-
-
-/**
- * PRE and POST Hooks
- */
-
-const validatePresenceOf = function(value) {
-  return value && value.length;
-};
-
-UserSchema.pre('save', function(next) {
-  if (!this.isNew) return next();
-  if (!validatePresenceOf(this.hashedPassword) && authTypes.indexOf(this.provider) === -1)
-    next(new Error('Invalid password'));
-  else
-    next();
-});
-
-UserSchema.pre('remove', (next) => {
-  next();
-})
 
 /**
  * Instance Methods
  */
 
 UserSchema.methods = {
-  /** Authenticate - check if the passwords are the same **/
+  // check if the passwords are the same
   authenticate: function(plainText) {
     return this.encryptPassword(plainText) === this.hashedPassword;
   },
 
-  /** Generate a cryptographic 'salt' **/
+  // generate a cryptographic 'salt'
   makeSalt: function() {
     return crypto.randomBytes(16).toString('base64');
   },
 
-  /** Encrypt password **/
+  // encrypt password using salt
   encryptPassword: function(password) {
     if (!password || !this.salt) return '';
     var salt = new Buffer(this.salt, 'base64');
@@ -111,6 +86,7 @@ UserSchema.methods = {
 * Virtual Methods
 **/
 
+// used to quickly create/access hashedPassword
 UserSchema
   .virtual('password')
   .set(function(password) {
@@ -122,7 +98,7 @@ UserSchema
     return this._password;
   });
 
-// Public profile information
+// public profile information
 UserSchema
   .virtual('public')
   .get(function() {
@@ -132,7 +108,7 @@ UserSchema
     };
   });
 
-// Non-sensitive info we'll be putting in the token
+// user id token
 UserSchema
   .virtual('token')
   .get(function() {

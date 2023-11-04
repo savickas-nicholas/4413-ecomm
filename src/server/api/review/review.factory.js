@@ -9,7 +9,7 @@ let sampleText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc 
 let textArr = sampleText.split(' ');
 
 const ReviewFactory = Factory.define('review')
-  .sequence('id')
+  .sequence('k')
   .attr('rating', function() {
     return getRandomArbitrary(1, 10);
   })
@@ -20,7 +20,7 @@ const ReviewFactory = Factory.define('review')
     return strRep;
   })
   .attr('title', 'Bot Review')
-  .attr('product')
+  .attr('vehicle')
   .attr('author')
 
 export default ReviewFactory;

@@ -6,7 +6,6 @@ export const searchReviews = async (req, res) => {
   try {
     let reviews = await Review.find(req.query);
     return res.status(200).json({reviews});
-
   } catch(err) {
     return handleError(res, err);
   }
@@ -15,14 +14,12 @@ export const searchReviews = async (req, res) => {
 // Get a single review
 export const getReview = async (req, res) => {
   try {
-    let review = Review.findById(req.params.id)
-      .populate('product', '_id name')
+    let review = await Review.findById(req.params.id)
+      .populate('vehicle', '_id name')
       .populate('author', '_id name');
     
     if(!review) { return res.status(404).send('Not Found'); }
-    
     return res.status(200).json({review});
-
   } catch(err) {
     return handleError(res, err);
   }
@@ -46,21 +43,21 @@ export const createReview = async (req, res) => {
   }
 };
 
-// Updates an existing review in the DB.
-export const updateReview = (req, res) => {
-  Review.findOneAndUpdate(
+// update an existing review in the DB.
+export const updateReview = async (req, res) => {
+  try {
+    let review = await Review.findOneAndUpdate(
       {_id: req.params.id},
       {$set: req.body},
       {runValidators: true, new: true})
-    .populate('product author', '_id name')
-    .exec(function(err, review) {
-      console.log(err);
-      if (err) { return handleError(res, err); }
-      return res.status(200).json(review);
-    });
+    .populate('vehicle author', '_id name');
+    return res.status(200).json({review});
+  } catch(err) {
+    return handleError(res, err);
+  }
 };
 
-// Deletes a review from the DB.
+// delete a review from the DB.
 export const deleteReview = async (req, res) => {
   try {
     await Review.findByIdAndRemove(req.params.id);
@@ -71,6 +68,6 @@ export const deleteReview = async (req, res) => {
 };
 
 function handleError(res, err) {
-  return res.status(500).send(err);
+  return res.status(404).send(err);
 }
 

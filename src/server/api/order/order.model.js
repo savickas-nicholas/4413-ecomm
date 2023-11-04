@@ -2,7 +2,8 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-const statuses = ['Pending', 'Confirmed', 'Shipped', 'Out for Delivery', 'Delivered'];
+const statuses = ['Pending', 'Confirmed', 'Shipped', 
+  'Out for Delivery', 'Delivered'];
 
 export const OrderSchema = new Schema({
 
@@ -27,15 +28,24 @@ export const OrderSchema = new Schema({
     default: 'Pending'
   },
 
-  products: [{
+  vehicles: [{
     type: Schema.Types.ObjectId,
     ref: 'Vehicle'
   }],
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: true
   }, 
 
 }, { timestamps: true });
+
+
+OrderSchema
+  .path('vehicles')
+  .validate(function(vehicles) {
+    return vehicles && vehicles.length > 0; 
+  }, 'Vehicles cannot be empty');
+
 
 export default mongoose.model('Order', OrderSchema);

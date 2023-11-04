@@ -41,7 +41,7 @@ export default async function(app) {
     app.use(favicon(path.resolve(config.root, 'src/favicon.ico'))); 
   }
 
-  console.log('dirname --> ', path.resolve(__dirname));
-  console.log(`root --> ${path.resolve(config.root)}`);
-  console.log(`appPath --> ${app.get('appPath')}`);
+  //console.log('dirname --> ', path.resolve(__dirname));
+  //console.log(`root --> ${path.resolve(config.root)}`);
+  //console.log(`appPath --> ${app.get('appPath')}`);
 }

@@ -22,7 +22,7 @@ let all = {
     seedDB: false,
 
     secrets: {
-      session: process.env.SESSION, //|| env.SESSION_SECRET,
+      session: process.env.SESSION || '1ccc96a857269d08c0c70c9f12df8187', //|| env.SESSION_SECRET,
       googleAPI: process.env.GOOGLE_API, //|| env.googleAPI, 
       mongoURI: process.env.mongoURI,
       //serverEmail: process.env.EADDRESS || env.HOME_EMAIL,

@@ -6,30 +6,32 @@ export const ReviewSchema = new Schema({
   title: {
     type: String,
     maxLength: 100,
-    required: 'You must enter a title for this review.'
+    required: 'You must provide a title.'
   },
   summary: {
     type: String,
     maxLength: 1000,
-    required: 'You must enter a review for this product.'
+    required: 'You must provide feedback.'
   },
   rating: {
     type: Number,
   	min: 1,
   	max: 10,
-    required: 'You must select a rating for this review.'
+    required: 'You must provide a rating.'
   }, 
   author: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: 'This review must have a valid author.'
   },
-  product: {
+  vehicle: {
     type: Schema.Types.ObjectId,
   	ref: 'Vehicle',
     required: 'This review must reference a valid vehicle.'
   },
 }, {timestamps: true});
+
+// maybe add validation to prevent user from submitting >1 review per vehicle
 
 /*
 * Virtual Methods

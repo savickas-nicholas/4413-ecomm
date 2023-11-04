@@ -5,14 +5,13 @@ import * as db from '../../config/testing/testDb';
 
 import Vehicle from './vehicle.model';
 import VehicleFactory from './vehicle.factory';
-import db from '../../db';
 
 
 describe('Vehicle Model', function() {
     let mockVehicle;
     
     beforeAll(async function() {
-        await db();
+        await db.connect();
         await Vehicle.deleteMany({});
     });
 

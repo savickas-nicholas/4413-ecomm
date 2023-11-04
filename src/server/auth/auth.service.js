@@ -1,29 +1,30 @@
-'use strict';
-
 import config from '../config/environment';
 import jwt from 'jsonwebtoken';
 import expressJwt from 'express-jwt';
 import compose from 'composable-middleware';
 import User from '../api/user/user.model';
-const validateJwt = expressJwt({ secret: "shhhhhhared-secret", algorithms: ["HS256"] });
+const validateJwt = expressJwt({ secret: config.secrets.session, algorithms: ["HS256"] });
 
 /**
- * Sets 'req.user' if authenticated, else returns 403
+ * Sets 'req.user' if authenticated, else returns 401
  */
 export function isAuthenticated() {
   return compose()
-    .use(function(req, res, next) { // used to validate jwt of user session, requires that the 'authorization' header be set to 'Bearer ${token}'
-      if(req.query && req.query.hasOwnProperty('access_token')) { // allows 'access_token' to be passed through 'req.query' if necessary
+    // used to validate jwt of user session
+    // requires that the 'authorization' header be set to 'Bearer ${token}'
+    .use(function(req, res, next) { 
+      // allows 'access_token' to be passed through 'req.query' if necessary  
+      if(req.query && req.query.hasOwnProperty('access_token')) {
         req.headers.authorization = 'Bearer ' + req.query.access_token;
       }
       validateJwt(req, res, next);
     })
-    .use(function(req, res, next) { //used to attach 'user' to 'req'
+     //used to attach 'user' to 'req'
+    .use(function(req, res, next) {
       User.findById(req.user._id)
         .then(user => {
           if (!user) return res.status(401).send('Unauthorized');
           req.user = user;
-          console.log('user auth success');
           next();
         })
         .catch(err => next(err))
@@ -56,6 +57,7 @@ export function correctUser(className) {
 
 /**
  * Checks if the user role meets the minimum requirements of the route
+ * else returns 403
  */
 export function hasRole(roleRequired) {
   if (!roleRequired) throw new Error('Required role needs to be set');
@@ -87,51 +89,4 @@ export function setTokenCookie(req, res) {
   var token = signToken(req.user._id, req.user.role);
   res.cookie('token', JSON.stringify(token));
   res.redirect('/');
-}
-
-/*
-** used to verify that user correctly entered their existing password, WORKING
-*/
-export function verifyOldPassword() {
-  return compose()
-    .use(function(req, res, next) {
-      console.log('verifying password');
-      if(req.user.authenticate(req.body.oldPassword)) {
-        console.log('password verified');
-        next();
-      } else {
-        let err = new Error("Your current password is incorrect!");
-        return res.status(403).send(err);
-      }
-    });
-}
-
-/*
-** used to verify activationToken, WORKING
-*/
-export function verifyActivationRequest() {
-  return compose()
-    .use(function(req, res, next) {
-      let activationToken = req.session.activation;
-      jwt.verify(req.query.activationToken, config.secrets.session, {maxAge: '1 day'}, function(err, token) {
-        if(err) return res.status(403).send('This link has expired!');
-        if(token.key !== activationToken.key || token.id !== activationToken.id) return res.status(401).send('Unauthorized');
-        next();
-      });
-    });
-}
-
-/*
-** used to verify resetToken, WORKING
-*/
-export function verifyResetRequest() {
-  return compose()
-    .use(function(req, res, next) {
-      let resetToken = req.session.reset; //fix session not always defined
-      jwt.verify(req.body.resetToken, config.secrets.session, {maxAge: '1 day'}, function(err, token) {
-        if(err) return res.status(403).send('This link has expired!');
-        if(token.key !== resetToken.key || token.id !== resetToken.id) return res.status(401).send('Unauthorized');
-        next();
-      });
-    });
 }

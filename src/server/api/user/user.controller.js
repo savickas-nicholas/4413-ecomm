@@ -1,21 +1,18 @@
 
-import jwt from 'jsonwebtoken';
 import _ from 'lodash';
 
-import config from '../../config/environment';
+import { signToken } from '../../auth/auth.service';
 import User from './user.model';
 
 
-/* Search for users */
+/* search for users */
 export const getUsers = async (req, res) => {
-  console.log('getUsers query --> ', req.query);
   let query = req.query || {};
 
   try {
-    const count = await User.count(query);
     const users = await User.find(query)
                     .select('-salt -hashedPassword -provider');
-    return res.status(200).json({ users, count });
+    return res.status(200).json({ users });
   } catch(err) {
     return handleError(res, err);
   }
@@ -23,19 +20,14 @@ export const getUsers = async (req, res) => {
 
 
 /* get all data for one user */
-export const getUser = (req, res) => {
-  User.findById(req.params.id)
-    .select('-salt -hashedPassword -provider')
-    .populate({
-      path: 'profile',
-      populate: {
-        path: 'image'
-      }
-    })
-    .then((user) => {
-      return res.status(200).json({ user });
-    })
-    .catch(err => handleError(res, err))
+export const getUser = async (req, res) => {
+  try {
+    let user = await User.findById(req.params.id)
+                  .select('-salt -hashedPassword -provider');
+    return res.status(200).json({ user });
+  } catch(err) {
+    return handleError(res, err);
+  }
 };
 
 
@@ -48,53 +40,42 @@ export const addUser = async (req, res) => {
   /* should perform validation of 'req.body' fields (e.g. must have Name/Email/Password) */
 
   try {
-    let count = await User.count();
     let userObj = {
       provider: 'local',
       role: 'user'
     };
-    if(count < 1) {
-      userObj.role = 'admin';
-    };
     let newUser = _.merge(userObj, req.body);
-    console.log('newUser --> ', newUser);
     let user = await User.create(newUser);
-    console.log('user --> ', user);
-    let token = jwt.sign({_id: user._id }, config.secrets.session, { expiresIn: '5h' });
+    let token = signToken(user._id);
     return res.status(201).json({ token, user });
   } catch(err) {
-    console.log(err);
-    return res.status(500).send(err);
+    return handleError(res, err);
   }
 };
 
 // used to retrieve the currently logged-in user via JSON token 
-export const getMe = (req, res) => {
-  User.findOne({_id: req.user._id})
-    .select('-salt -hashedPassword -provider')
-    .populate({
-      path: 'profile',
-      populate: {
-        path: 'image'
-      }
-    })
-    .then((user) => { // don't ever give out the password or salt
-      if (!user) return res.status(401).send('Unauthorized');
-      //console.log('getMe --> ', user);
-
-      return res.status(200).json(user);
-    }).catch((err) => res.status(500).send(err))
+export const getMe = async (req, res) => {
+  try {
+    let user = User.findOne({_id: req.user._id})
+      .select('-salt -hashedPassword -provider');
+    if(!user) return res.status(401).send('Unauthorized');
+    return res.status(200).json({user});
+  } catch(err) {
+    return handleError(res, err);
+  }
 };
 
 /* delete a User */
-export const deleteUser = (req, res) => {
-  User.findOneAndRemove({_id: req.params._id})
-  .then((user) => {
-    return res.status(200).end();
-  }).catch((err) => res.status(500).send(err))
+export const deleteUser = async (req, res) => {
+  try {
+    await User.findOneAndRemove({_id: req.params.id});
+    return res.status(204).end();
+  } catch(err) {
+    return handleError(res, err);
+  }
 };
 
+
 function handleError(res, err) {
-  console.log('user handleError --> ', err);
-  return res.status(500).send(err);
+  return res.status(404).send(err);
 }
