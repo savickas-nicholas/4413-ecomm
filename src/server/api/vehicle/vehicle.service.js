@@ -10,16 +10,9 @@ async function getVehicle(vehicleId, ) {
     return await Vehicle.findById(vehicleId)
 }
 
-async function addNewVehicle(userId, vehicleObj) {
-    return await checkAdminRole(userId, async function(err) {
-        if (err) {
-            throw err;
-        }
-        else {
-            const vehicle = await Vehicle.create(vehicleObj);
-            return vehicle;
-        }
-    })
+async function addNewVehicle(vehicleObj) {
+    const vehicle = await Vehicle.create(vehicleObj);
+    return vehicle;
 }
 
 async function removeVehicle(vehicleId, count) {
@@ -38,7 +31,7 @@ async function removeVehicle(vehicleId, count) {
 // Normalizes variables and compares them to determine best recommendation
 async function recommendVehicle(price, year, brand, miles, milesUnits) {
     let vehicles = await Vehicle.find({brand});
-    if (vehicles.count <= 1) vehicles = await Vehicle.find({});
+    if (vehicles.length <= 1) vehicles = await Vehicle.find({});
     
     const minMaxValues = {
         price: 0,
@@ -66,7 +59,7 @@ async function recommendVehicle(price, year, brand, miles, milesUnits) {
     });
 
     scores.sort((vehicleScore1, vehicleScore2) => { return vehicleScore1.score - vehicleScore2.score });
-    return scores.slice(5).map(scoresVehicle => { return scoresVehicle.vehicle });
+    return scores.slice(0,5).map(scoresVehicle => { return scoresVehicle.vehicle });
 }
 
 function convertMileage(miles, units, intendedUnits) {
@@ -74,15 +67,6 @@ function convertMileage(miles, units, intendedUnits) {
 
     if (intendedUnits === "km") return miles / 2.35215;
     else return miles * 2.35215;
-}
-
-async function checkAdminRole(userId, status) {
-    const user = await User.findById(userId);
-
-    if (user.role === 'admin')
-        return status();
-    else
-        return status(Error('Account does not have applicable user role'));
 }
 
 export { getAllVehicles, getVehicle, addNewVehicle, removeVehicle, recommendVehicle }

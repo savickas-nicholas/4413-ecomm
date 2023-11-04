@@ -12,20 +12,20 @@ describe('Vehicle Model', function() {
     
     beforeAll(async function() {
         await db.connect();
-        await Vehicle.deleteMany({});
+        await db.clearDatabase();
+    });
+  
+    beforeEach(async () => {
+        mockVehicle = new Vehicle(VehicleFactory.build());
+    });
+  
+    afterEach(async function() {
+        await db.clearDatabase();
     });
 
     afterAll(async () => {
         await db.closeDatabase();
     })
-  
-    beforeEach(function() {
-        mockVehicle = new Vehicle(VehicleFactory.build());
-    });
-  
-    afterEach(async function() {
-        await Vehicle.deleteMany({});
-    });
 
     it('should begin with no vehicles', function(done) {
         Vehicle.find({}).then(vehicles => {
