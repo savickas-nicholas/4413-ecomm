@@ -7,9 +7,9 @@ const VehicleFactory = new Factory()
   .attr('description', ['k'], function(i) { return 'vehicle' + i; })
   .attr('brand', ['k'], function(i) { return 'vehicle' + i; })
   .attr('model', ['k'], function(i) { return 'vehicle' + i; })
-  .attr('year', 2020)
+  .attr('year', ['k'], function(i) { return 2020 + i; } )
+  .attr('price', ['k'], function(i) { return 10000.0 + (i * 10000.0); } )
   .attr('quantity', 10)
-  .attr('price', 10000.0)
   .attr('activedeal', true)
 
 export default VehicleFactory;
