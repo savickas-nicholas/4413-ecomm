@@ -14,7 +14,7 @@ Before running the application, make sure you have the following installed on yo
 
     ```bash
     git clone https://github.com/your-username/4413-ecomm.git
-    cd your-repo
+    cd 4413-ecomm
     ```
 
 2. Install dependencies:
