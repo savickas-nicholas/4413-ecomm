@@ -9,8 +9,16 @@ import { getAllVehicles,
 
 // Search for the catalog of vehicles
 // Filtering, sorting, etc. will be done on the client with this list of vehicles
+// 'orderBy' query param is used to select field to orderBy
+// 'desc=True' query param is used in conjunction with 'orderBy' to change direction
 export const getVehicles = async (req, res) => {
   let query = req.query || {};
+
+  let sortObj = {};
+  let asc = req.query.desc ? -1 : 1; // either asc or desc
+  if(req.query.orderBy) { // specify field to sort by
+    sortObj[req.query.orderBy] = asc
+  }
 
   try {
     const vehicles = await getAllVehicles(query);

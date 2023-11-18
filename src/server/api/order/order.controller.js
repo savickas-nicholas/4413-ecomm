@@ -76,6 +76,10 @@ export const deleteOrder = async (req, res) => {
   }
 };
 
+// generate sales report
+export const getSalesReport = async (req, res) => {
+  return res.status(204).end();
+}
 
 
 function handleError(res, err) {

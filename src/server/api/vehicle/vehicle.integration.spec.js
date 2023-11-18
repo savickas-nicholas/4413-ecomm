@@ -39,6 +39,55 @@ describe('GET api/vehicles/', function() {
         expect(res.body.vehicles).toBeInstanceOf(Array);
         expect(res.body.vehicles.length).toBe(2);
     });
+
+    // it('should respond with vehicles sorted by price high to low', async () => {
+    //     let vehicle1 = VehicleFactory.build({
+    //         price: 100
+    //     });
+    //     let vehicle2 = VehicleFactory.build({
+    //         price: 200
+    //     });
+    //     let vehicle3 = VehicleFactory.build({
+    //         price: 300
+    //     });
+      
+    //     await Vehicle.create(vehicle1);
+    //     await Vehicle.create(vehicle2);
+    //     await Vehicle.create(vehicle3);
+
+    //     const res = await request(app).get('/api/vehicles/?orderBy=price&desc=True');
+    //     expect(res.type).toBe('application/json');
+    //     expect(res.status).toBe(200);
+    //     expect(res.body.vehicles).toBeInstanceOf(Array);
+    //     expect(res.body.vehicles.length).toBe(3);
+    //     expect(res.body.vehicles[0]._id).toBe(vehicle3._id.toString());
+    // });
+
+    it('should respond with vehicles filtered by model', async () => {
+        let vehicle1 = VehicleFactory.build({
+            model: 'Civic'
+        });
+        let vehicle2 = VehicleFactory.build({
+            model: 'Civic'
+        });
+        let vehicle3 = VehicleFactory.build({
+            model: 'Elantra'
+        });
+      
+        await Vehicle.create(vehicle1);
+        await Vehicle.create(vehicle2);
+        await Vehicle.create(vehicle3);
+
+        const res = await request(app).get(`/api/vehicles/?model=Civic`);
+        expect(res.type).toBe('application/json');
+        expect(res.status).toBe(200);
+        expect(res.body.vehicles).toBeInstanceOf(Array);
+        expect(res.body.vehicles.length).toBe(2);
+        expect(res.body.vehicles[0].model).toBe('Civic')
+        expect(res.body.vehicles[1].model).toBe('Civic')
+    });
+
+
 })
 
 describe('GET api/vehicles/:id', function() {

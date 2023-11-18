@@ -1,4 +1,4 @@
-//const Factory = require('rosie').Factory;
+
 import { Factory } from 'rosie'; 
 
 const VehicleFactory = new Factory()

@@ -1,6 +1,8 @@
 
 import Express from 'express';
+import NodeCache from 'node-cache';
 
+import { setCache } from './cache';
 import configureExpress from './express';
 import registerRoutes from './routes';
 
@@ -24,6 +26,10 @@ if (process.env.NODE_ENV === 'development') {
   }));
   app.use(webpackHotMiddleware(compiler));
 }
+
+// setup in-memory cache
+const myCache = new NodeCache();
+setCache(myCache);
 
 // configure express
 configureExpress(app);

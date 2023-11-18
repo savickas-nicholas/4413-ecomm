@@ -35,7 +35,6 @@ router.post('/local/', function(req, res, next) {
     if (!user) return res.status(404).json({message: 'Something went wrong, please try again.'});
 
     var token = signToken(user._id, user.role);
-    console.log('login success');
     res.status(200).json({ token });
   })(req, res, next)
 });

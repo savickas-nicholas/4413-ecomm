@@ -7,6 +7,6 @@ const router = new Router();
 router.post('/statistics', auth.hasRole('admin'), controller.getUsageStatistics);
 
 // adds a usage statistic based on the user, how long they accessed the page, which page they were on, etc.
-router.post('/', controller.addUsageStatistic);
+router.post('/', auth.isAuthenticated(), controller.addUsageStatistic);
 
 export default router;

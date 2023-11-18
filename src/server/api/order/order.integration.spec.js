@@ -64,7 +64,7 @@ describe('GET /api/orders', function() {
   });
 
   // add filter by user
-  it('should respond with orders for specific vehicle', async () => {
+  it('should respond with orders for specific user', async () => {
     let order = OrderFactory.build({
       user: user._id,
       vehicles: [ vehicle._id ]
@@ -82,6 +82,7 @@ describe('GET /api/orders', function() {
     expect(res.type).toBe('application/json');
     expect(res.body.orders).toBeInstanceOf(Array);
     expect(res.body.orders.length).toBe(1);
+    expect(res.body.orders[0].user).toBe(user._id.toString());
   });
 });
 

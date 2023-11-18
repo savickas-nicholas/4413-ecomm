@@ -87,6 +87,7 @@ describe('GET /api/reviews', function() {
     expect(res.type).toBe('application/json');
     expect(res.body.reviews).toBeInstanceOf(Array);
     expect(res.body.reviews.length).toBe(1);
+    expect(res.body.reviews[0].vehicle).toBe(vehicle2._id.toString());
   });
 });
 
