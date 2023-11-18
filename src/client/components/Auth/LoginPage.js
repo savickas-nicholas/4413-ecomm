@@ -1,61 +1,52 @@
 
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Helmet from 'react-helmet';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 
+import axios from '../../util/httpCaller';
 
 export default function LoginPage() {
-  const [answer, setAnswer] = useState('');
-  const [error, setError] = useState(null);
-  const [status, setStatus] = useState('typing');
-  
-  // Validation //
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  canBeSubmitted = () => {
-    const { email, password } = this.state;
-    return (email.length > 0 && password.length > 0);
-  }
+  const { logIn } = useOutletContext();
 
-  // Event Handlers //
+  const navigate = useNavigate();
 
-  handleEmailChange = (se) => {
-    this.setState({email: se.target.value});
-  }
-
-  handlePasswordChange = (se) => {
-    this.setState({password: se.target.value});
-  }
-
-  handleSubmit = (se) => {
+  const handleSubmit = (se) => {
     se.preventDefault();
-    if(!this.canBeSubmitted()) { return; }
-    const {email, password} = this.state;
-    this.props.dispatch(login({email, password}));
+    
+    axios.post('auth/local/', {
+      email, 
+      password, 
+    }).then(res => {
+      console.log(res);
 
+      const token = res.data.token;
+      const user = res.data.user;
+      logIn(user, token);
+      navigate('/', { replace: true });
+
+    }).catch(err => {
+      console.log(err);
+    })
   };
 
   return (
     <div>
       <Helmet title='Login to Your Account.' />
-      <form name='loginForm' onSubmit={this.handleSubmit}>
+      <form name='loginForm' onSubmit={handleSubmit}>
         <div className='form-group'>
           <label htmlFor='email'>Email: </label>
-          <input type='email' name='userEmail' value={this.email} onChange={this.handleEmailChange} placeholder='johndoe@example.com' className='form-control' id='email' required></input>
-          {errors && errors.email && 
-            <div id='emailErrors'>
-              {errors.email}
-            </div>
-          }
+          <input type='email' name='userEmail' value={email} onChange={(e) => setEmail(e.target.value)} 
+            placeholder='johndoe@example.com' className='form-control' id='email' required></input>
         </div>
         <div className='form-group'>
           <label htmlFor='password'>Password: </label>
-          <input type='password' name='userPassword' value={this.password} onChange={this.handlePasswordChange} className='form-control' id='password' required></input>
-          {errors && errors.password && 
-            <div id='passwordErrors'>
-              {errors.password}
-            </div>
-          }
+          <input type='password' name='userPassword' value={password} onChange={(e) => setPassword(e.target.value)} 
+            className='form-control' id='password' required></input>
         </div>
-        <button type='submit' disabled={!isEnabled} className='btn btn-md btn-default'>Login</button>
+        <button type='submit' className='minimal-btn'>Login</button>
       </form>
     </div>
   );

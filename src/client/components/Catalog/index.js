@@ -11,7 +11,10 @@ export default function Catalog() {
 
         <div>
             <div>
-                <input>Search Vehicle Name</input>
+                <div>
+                    <label>Search Vehicle Name</label>
+                    <input type="text"></input>
+                </div>
                 <button>Filter by Price</button>
                 <button>Filter by Brand</button>
                 <button>Filter by Mileage</button>
@@ -26,7 +29,7 @@ export default function Catalog() {
                     <td>
                         <div>
                             <h4>Vehicle</h4>
-                            <img>Referenced Image</img>
+                            <img alt="Referenced Image"></img>
                             <p>Vehicle Description</p>
                             <div>
                                 <div>Brand name, model & year</div>
@@ -64,7 +67,7 @@ export default function Catalog() {
                 <label for="miles">Miles</label>
                 <input type="text" name="miles"></input>
 
-                <input type="submit">Get Recommendation</input>
+                <button type="submit">Get Recommendation</button>
             </form>
         </div>
     </div>

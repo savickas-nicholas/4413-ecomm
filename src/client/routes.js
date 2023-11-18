@@ -14,6 +14,8 @@ import RegistrationPage from './components/Auth/RegistrationPage';
 import LoginPage from './components/Auth/LoginPage';
 import Cart from './components/Cart/Cart';
 
+import Catalog from './components/Catalog/index';
+
 export default [
   {
     path: "/",
@@ -21,7 +23,7 @@ export default [
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: <Catalog />,
       },
       {
         path: "/register",
