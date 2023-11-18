@@ -78,7 +78,48 @@ export const deleteOrder = async (req, res) => {
 
 // generate sales report
 export const getSalesReport = async (req, res) => {
-  return res.status(204).end();
+  // expects dates to be in ISO string format yyyy-mm-dd
+  const { startDate, endDate } = req.body;
+
+  try {
+    const startDateTimestamp = Date.parse(startDate);
+    const startDateObj = new Date(startDateTimestamp);
+
+    const endDateTimestamp = Date.parse(endDate);
+    const endDateObj = new Date(endDateTimestamp);
+
+    const orders = await Order.find({})
+        .gte('createdAt', startDateObj)
+        .lte('createdAt', endDateObj)
+        .populate('vehicles');
+
+    let totalVehiclesSold = 0;
+    let totalHotDealsSold = 0;
+    let totalSales = 0;
+    let salesByBrand = {};
+    for(let o of orders) {
+      totalSales += o.price;
+      for(let v of o.vehicles){
+        totalVehiclesSold += 1;
+        salesByBrand[v.brand] = salesByBrand[v.brand] ? salesByBrand[v.brand] + 1 : 1
+
+        if(v.activeDeal === true) {
+          totalHotDealsSold += 1;
+        }
+      }
+    }
+
+    let statistics = {
+      totalVehiclesSold,
+      totalHotDealsSold,
+      totalSales, 
+      salesByBrand,
+    }
+    
+    return res.status(200).json({ statistics });
+  } catch (err) {
+    return handleError(res, err);
+  }
 }
 
 

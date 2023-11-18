@@ -258,3 +258,92 @@ describe('DELETE /api/orders/:id', function() {
     expect(newCount).toBe(count - 1);
   });
 });
+
+
+describe('POST /orders/sales', function() {
+  let user;
+  let admin;
+  let vehicle;
+  let vehicle2;
+  let vehicle3;
+  let userToken;
+  let adminToken;
+
+  beforeAll(async () => {
+    await db.connect();
+    await db.clearDatabase();
+  });
+  beforeEach(async () => {
+    user = await User.create(UserFactory.build());
+    admin = await User.create(UserFactory.build({
+      role: 'admin'
+    }));
+    userToken = signToken(user._id);
+    adminToken = signToken(admin._id);
+    vehicle = await Vehicle.create(VehicleFactory.build({
+      brand: 'Honda',
+      activeDeal: false,
+    }));
+    vehicle2 = await Vehicle.create(VehicleFactory.build({
+      brand: 'Toyota',
+      activeDeal: true,
+    }));
+    vehicle3 = await Vehicle.create(VehicleFactory.build( {
+      brand: 'Honda',
+      activeDeal: true,
+    }));
+  });
+  afterEach(async () => {
+      await db.clearDatabase();
+  });
+  afterAll(async () => {
+      await db.closeDatabase()
+  });
+
+  it('should respond with 403 if not an admin', async () => {
+    const startDate = new Date();
+    startDate.setHours(startDate.getHours() - 1);
+
+    const endDate = new Date();
+    endDate.setHours(startDate.getHours() + 1);
+
+    const res = await request(app).post('/api/orders/sales')
+      .set('Authorization', `Bearer ${userToken}`)
+      .send({
+        startDate,
+        endDate
+      });
+    expect(res.status).toBe(403);
+  });
+
+  it('should respond with JSON object of statistics if admin', async () => {   
+    let order1 = await Order.create(OrderFactory.build({
+      user: user._id,
+      vehicles: [vehicle, vehicle2]
+    }))
+
+    let order2 = await Order.create(OrderFactory.build({
+      user: user._id,
+      vehicles: [vehicle3]
+    }))
+    
+    const startDate = new Date();
+    startDate.setHours(startDate.getHours() - 1);
+
+    const endDate = new Date();
+    endDate.setHours(startDate.getHours() + 1);
+
+    const res = await request(app).post('/api/orders/sales')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        startDate,
+        endDate
+      });
+    expect(res.type).toBe('application/json');
+    expect(res.status).toBe(200);
+    let { totalVehiclesSold, totalHotDealsSold, salesByBrand } = res.body.statistics;
+    expect(totalVehiclesSold).toBe(3);
+    expect(totalHotDealsSold).toBe(2);
+    expect(salesByBrand['Toyota']).toBe(1);
+  });
+});
