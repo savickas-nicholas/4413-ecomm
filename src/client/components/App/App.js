@@ -37,8 +37,13 @@ export default function App() {
           },
         ]}
       />
-      <Header isLoggedIn={currentUser !== null} />
-      <Outlet />
+      <div className="header">
+        <Header isLoggedIn={currentUser !== null} />
+      </div>
+      
+      <div className="container">
+        <Outlet />
+      </div>
       <Footer />
     </React.Fragment>
   );
