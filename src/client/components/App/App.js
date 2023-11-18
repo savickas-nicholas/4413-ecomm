@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { Outlet } from "react-router-dom";
@@ -8,6 +9,7 @@ import Footer from './components/Footer/Footer';
 
 
 export default function App() {
+  const [currentUser, setCurrentUser] = useState(null);
 
   return (
     <React.Fragment>
@@ -28,18 +30,14 @@ export default function App() {
             content: 'width=device-width, initial-scale=1',
           },
         ]}
-        /*link={[
+        link={[
           {
             rel: 'stylesheet',
-            href: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
+            href: 'https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css',
           },
-          {
-            rel: 'stylesheet',
-            href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
-          },
-        ]}*/
+        ]}
       />
-      <Header />
+      <Header isLoggedIn={currentUser !== null} />
       <Outlet />
       <Footer />
     </React.Fragment>

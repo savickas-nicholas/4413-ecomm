@@ -1,4 +1,7 @@
 
+
+@import './components/App/components/Header/Header.scss';
+
 /* UNIVERSAL STYLES */ 
 
 *, *:after, *:before {
@@ -217,23 +220,13 @@ i:hover {
 }
 
 
-/* Changes to Bootstrap */
 
+// footer
 
-
-
-/* TESTING FEATURES */
-
-.ssr {
-  color: red;
+.footer {
+  text-align: center;
+  padding: 10px;
 }
 
-.global-blue-text {
-  color: blue;
-}
-
-.blue-text { 
-  color: rgba(111, 211, 214, 0.692);
-}
 
 

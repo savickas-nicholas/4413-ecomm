@@ -10,6 +10,9 @@ import { Route, Switch } from 'react-router-dom';
 import App from './components/App/App';
 import Home from './components/App/components/Home/HomePage';
 
+import RegistrationPage from './components/Auth/RegistrationPage';
+import LoginPage from './components/Auth/LoginPage';
+import Cart from './components/Cart/Cart';
 
 export default [
   {
@@ -19,6 +22,18 @@ export default [
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/register",
+        element: <RegistrationPage />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
+      {
+        path: "/cart",
+        element: <Cart />,
       },
     ],
   },
