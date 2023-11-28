@@ -253,6 +253,61 @@ i:hover {
 }
 
 
+/* Layouts */
+
+// ROWS
+
+.flex-sidebar-content {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+
+  .sidebar {
+    flex: 3;
+  }
+  .content {
+    flex: 7;
+  }
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+// for elements on opposite sides of the container
+.flex-spread {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+
+// COLUMNS
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// has a big gap
+.flex-column-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+
+.flex-centered {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
 
 
 

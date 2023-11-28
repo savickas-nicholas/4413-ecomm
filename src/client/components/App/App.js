@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';

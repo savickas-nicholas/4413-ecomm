@@ -16,7 +16,8 @@ import LoginPage from './components/Auth/LoginPage';
 
 import Cart from './components/Cart/Cart';
 
-import Catalog from './components/Vehicle/Catalog';
+import Catalog from './components/Vehicle/VehicleCatalog';
+import VehicleDetails from './components/Vehicle/VehicleDetails';
 
 export default [
   {
@@ -26,6 +27,10 @@ export default [
       {
         path: "/",
         element: <Catalog />,
+      },
+      {
+        path: "/vehicles/:vehicleId",
+        element: <VehicleDetails />,
       },
       {
         path: "/register",
