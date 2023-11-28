@@ -12,9 +12,11 @@ import Home from './components/App/components/Home/HomePage';
 
 import RegistrationPage from './components/Auth/RegistrationPage';
 import LoginPage from './components/Auth/LoginPage';
+
+
 import Cart from './components/Cart/Cart';
 
-import Catalog from './components/Catalog/index';
+import Catalog from './components/Vehicle/Catalog';
 
 export default [
   {

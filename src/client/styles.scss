@@ -48,7 +48,6 @@ input::placeholder {
   padding: 10px;
 }
 
-
 .redText {
   color: red;
 }
@@ -57,6 +56,13 @@ input::placeholder {
   color: green;
 }
 
+.center {
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
 
 .click-cursor {
   cursor: pointer;

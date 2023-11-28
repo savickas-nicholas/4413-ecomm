@@ -26,7 +26,6 @@ export default function LoginPage() {
       const user = res.data.user;
       logIn(user, token);
       navigate('/', { replace: true });
-
     }).catch(err => {
       console.log(err);
     })
