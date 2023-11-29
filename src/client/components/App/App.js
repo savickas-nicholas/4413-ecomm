@@ -60,9 +60,7 @@ export default function App() {
           },
         ]}
       />
-      <div className="header">
-        <Header isLoggedIn={currentUser !== null} logOut={logOut}  />
-      </div>
+      <Header isLoggedIn={currentUser !== null} logOut={logOut}  />
       
       <div className="container">
         <Outlet context={{ logIn }} />
