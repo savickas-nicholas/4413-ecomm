@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 
 import LoanCalculator from '../LoanCalculator/LoanCalculator';
 
+import * as cartService from '../Cart/CartService';
+
 import http from '../../util/httpCaller';
 
 export default function VehicleDetails() {
@@ -21,7 +23,7 @@ export default function VehicleDetails() {
   }, []);
 
   const addToCart = () => {
-
+    cartService.addToCart(vehicle, quantity);
   }
 
   return (

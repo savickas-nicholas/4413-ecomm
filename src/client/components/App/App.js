@@ -27,10 +27,9 @@ export default function App() {
   }, []);
 
   // populate cart from localStorage on page load
-
-
-
-
+  useEffect(() => {
+    cartService.initCart();
+  }, []);
 
 
   // create new Alert
