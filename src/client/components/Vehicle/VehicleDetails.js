@@ -16,11 +16,12 @@ export default function VehicleDetails() {
     http.get(`/api/vehicles/${vehicleId}`).then((res) => {
       let vehicle = res.data.vehicle;
       setVehicle(vehicle);
+      console.log(vehicle)
     });
   }, []);
 
   const addToCart = () => {
-    
+
   }
 
   return (
@@ -42,7 +43,7 @@ export default function VehicleDetails() {
 
         </div>
 
-        <LoanCalculator />
+        <LoanCalculator propPrice={vehicle.price} />
     </div>
   );
 }

@@ -7,6 +7,8 @@ import Footer from './components/Footer/Footer';
 import Alert from '../Alert/Alert';
 
 import * as auth from '../../util/AuthService';
+import * as cartService from '../Cart/CartService';
+
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -23,6 +25,12 @@ export default function App() {
      setCurrentUser(currentUser);
     }
   }, []);
+
+  // populate cart from localStorage on page load
+
+
+
+
 
 
   // create new Alert
@@ -80,7 +88,6 @@ export default function App() {
           },
         ]}
       />
-      <Header isLoggedIn={currentUser !== null} logOut={logOut}  />
       <div className="header">
         <Header isLoggedIn={currentUser !== null} logOut={logOut}  />
         <Alert message={message} alertState={alertState} />
