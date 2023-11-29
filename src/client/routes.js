@@ -26,6 +26,10 @@ export default [
     children: [
       {
         path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/catalog",
         element: <Catalog />,
       },
       {
@@ -47,4 +51,3 @@ export default [
     ],
   },
 ]
-

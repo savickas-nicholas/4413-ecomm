@@ -120,6 +120,11 @@ module.exports = function(env) {
       extensions: ['*', '.js', '.jsx'],
     },
     plugins,
+    devServer: {
+      static: path.join(__dirname, 'dist'),
+      port: 3000,
+      open: true,
+    },
   };
 
 

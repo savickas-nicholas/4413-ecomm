@@ -80,6 +80,7 @@ export default function App() {
           },
         ]}
       />
+      <Header isLoggedIn={currentUser !== null} logOut={logOut}  />
       <div className="header">
         <Header isLoggedIn={currentUser !== null} logOut={logOut}  />
         <Alert message={message} alertState={alertState} />

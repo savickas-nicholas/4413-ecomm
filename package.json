@@ -11,7 +11,8 @@
     "clean": "rimraf ./dist",
     "start:dev": "cross-env NODE_MODE=SPA NODE_ENV=development GOOGLE_APPLICATION_CREDENTIALS=./service_account.json BABEL_DISABLE_CACHE=1 nodemon ./entry.js",
     "dev": "npm run clean && npm run start:dev",
-    "build-client": "webpack --config ./webpack.config.client.js --env env=production",
+    "start:client": "webpack serve --mode development --config webpack.config.client.js --env env=development",
+    "build-client": "webpack --config ./webpack.config.client.js --env env=development",
     "build-server": "webpack --config ./webpack.config.server.js --env env=production",
     "build": "npm run clean && npm run build-client && npm run build-server",
     "start:prod": "cross-env NODE_ENV=production GOOGLE_APPLICATION_CREDENTIALS=./service_account.json node ./entry.js",
@@ -96,6 +97,7 @@
     "webpack": "^5.83.1",
     "webpack-cli": "^5.1.1",
     "webpack-dev-middleware": "^6.1.1",
+    "webpack-dev-server": "^4.15.1",
     "webpack-hot-middleware": "^2.25.3",
     "webpack-node-externals": "^3.0.0"
   }
