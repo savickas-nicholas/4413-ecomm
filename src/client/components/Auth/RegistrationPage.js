@@ -18,6 +18,8 @@ export default function RegistrationPage() {
 
   const { logIn } = useOutletContext();
 
+  const navigate = useNavigate();
+
 //   useEffect(() => {
 //     client.get('?_limit=10').then((response) => {
 //        setPosts(response.data);
@@ -51,7 +53,7 @@ export default function RegistrationPage() {
       const token = res.data.token;
       const user = res.data.user;
       logIn(user, token);
-      useNavigate('/', { replace: true });
+      navigate('/', { replace: true });
     }).catch(err => {
       console.log('error', err.response);
     })

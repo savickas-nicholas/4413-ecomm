@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import Alert from '../Alert/Alert';
 
 import * as auth from '../../util/AuthService';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
 
+  const [message, setMessage] = useState('');
+  const [alertState, setAlertState] = useState(null);
 
+  const navigate = useNavigate();
 
+  // populate currentUser from localStorage on page load
   useEffect(() => {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (currentUser) {
@@ -20,16 +24,32 @@ export default function App() {
     }
   }, []);
 
+
+  // create new Alert
+  const createAlert = (msg, state) => {
+    setMessage(msg);
+    setAlertState(state);
+    setInterval(() => {
+      setMessage('');
+      setAlertState(null);
+    }, 5000);
+  }
+
+  // log out
   const logOut = () => {
     auth.removeAuthToken();
     localStorage.removeItem('currentUser');
     setCurrentUser(null);
+    createAlert('Logout Successful!', 'Success');
+    navigate('/login');
   }
 
+  // log in
   const logIn = (user, token) => {
     auth.setAuthToken(token);
     localStorage.setItem('currentUser', JSON.stringify(user));
     setCurrentUser(user);
+    createAlert('Login Successful!', 'Success')
   }
   
 
@@ -61,9 +81,13 @@ export default function App() {
         ]}
       />
       <Header isLoggedIn={currentUser !== null} logOut={logOut}  />
+      <div className="header">
+        <Header isLoggedIn={currentUser !== null} logOut={logOut}  />
+        <Alert message={message} alertState={alertState} />
+      </div>
       
       <div className="container">
-        <Outlet context={{ logIn }} />
+        <Outlet context={{ logIn, createAlert }} />
       </div>
       <Footer />
     </React.Fragment>
