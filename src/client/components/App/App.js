@@ -8,6 +8,7 @@ import Alert from '../Alert/Alert';
 
 import * as auth from '../../util/AuthService';
 import * as cartService from '../Cart/CartService';
+import usageTracker from '../../util/UsageService';
 
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
   const [alertState, setAlertState] = useState(null);
 
   const navigate = useNavigate();
+  usageTracker();
 
   // populate currentUser from localStorage on page load
   useEffect(() => {
