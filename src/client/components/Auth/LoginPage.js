@@ -11,7 +11,6 @@ export default function LoginPage() {
 
   const { logIn } = useOutletContext();
 
-  const navigate = useNavigate();
 
   const handleSubmit = (se) => {
     se.preventDefault();
@@ -20,12 +19,9 @@ export default function LoginPage() {
       email, 
       password, 
     }).then(res => {
-      console.log(res);
-
       const token = res.data.token;
       const user = res.data.user;
       logIn(user, token);
-      navigate('/', { replace: true });
     }).catch(err => {
       console.log(err);
     })

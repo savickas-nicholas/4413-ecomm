@@ -34,6 +34,7 @@ export const createReview = async (req, res) => {
   if(req.body.title === null || req.body.summary === null || req.body.rating === null) {
     return res.status(404).send("Invalid POST body!");
   }
+  console.log(req.body);
   
   try {
     let review = await Review.create(req.body);

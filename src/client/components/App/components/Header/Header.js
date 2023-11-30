@@ -37,7 +37,7 @@ export default function Header({ isLoggedIn, logOut }) {
               </li>
               { isLoggedIn ? 
                   <li className="nav-item">
-                    <a className="nav-link" href='#' onClick={logOut}>Log Out</a>
+                    <Link className="nav-link" onClick={logOut}>Log Out</Link>
                   </li>
                 :
                   <li className="nav-item">

@@ -84,8 +84,7 @@ export default function Checkout() {
     for(let v of cartService.getContents()) {
       subtotal += v.quantity * v.item.price;  
     }
-    console.log(subtotal)
-    return subtotal * 1.13;
+    return Number((subtotal * 1.13).toFixed(2));
   }
 
   // convert vehicles from cartService into correct format for API
@@ -124,7 +123,7 @@ export default function Checkout() {
     
     http.post('api/orders/', payload).then(res => {
       console.log(res);
-      
+
       // clear cart
       cartService.clearCart();
       

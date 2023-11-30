@@ -21,16 +21,15 @@ export default function App() {
   const navigate = useNavigate();
   usageTracker();
 
-  // populate currentUser from localStorage on page load
+  // on page load
   useEffect(() => {
+    // populate currentUser from localStorage on page load
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (currentUser) {
      setCurrentUser(currentUser);
     }
-  }, []);
 
-  // populate cart from localStorage on page load
-  useEffect(() => {
+    // populate cart from localStorage on page load
     cartService.initCart();
   }, []);
 
@@ -57,8 +56,8 @@ export default function App() {
     auth.removeAuthToken();
     localStorage.removeItem('currentUser');
     setCurrentUser(null);
-    createAlert('Logout Successful!', 'Success');
-    navigate('/login');
+    createAlert('Logout Successful!', 'success');
+    //navigate('/login'); // maybe change to last page
   }
 
   // log in
@@ -66,7 +65,8 @@ export default function App() {
     auth.setAuthToken(token);
     localStorage.setItem('currentUser', JSON.stringify(user));
     setCurrentUser(user);
-    createAlert('Login Successful!', 'Success')
+    createAlert('Login Successful!', 'success');
+    navigate('/', { replace: true }); // change to last page
   }
   
 

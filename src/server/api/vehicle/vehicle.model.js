@@ -23,10 +23,10 @@ export const VehicleSchema = new Schema({
     miles: { type: Number, default: 0, min: [0, "Must have non-negative mileage"] },
     milesUnits: { type: String, default: "km" },
     activeDeal: { type: Boolean, default: false },
-    customizations: {
+    customizations: [{
         type: CustomizationSchema, 
         default: () => ({})
-    }
+    }]
 });
 
 VehicleSchema.path('milesUnits').validate(

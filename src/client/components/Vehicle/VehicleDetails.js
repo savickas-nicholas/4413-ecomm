@@ -26,7 +26,7 @@ export default function VehicleDetails() {
     });
   }, []);
 
-  
+
 
   const changeQuantity = (val) => {
     if(val > vehicle.quantity) {
@@ -59,6 +59,8 @@ export default function VehicleDetails() {
     }
   }
 
+  console.log(vehicle)
+
   return (
     <div className='flex-column-sections'>
         <div className='detailsHeader flex-row-spread'>
@@ -69,6 +71,14 @@ export default function VehicleDetails() {
         <img src={`${vehicle.brand}_${vehicle.model}.jpg`} />
 
         <div className='details'>
+          <div className='customizations'>
+            { vehicle.customizations && vehicle.customizations.map(c => {
+              return (
+                <div></div>
+              )
+            }) }
+          </div>
+          
           <div className='form-group'>
             <label htmlFor='quantity'>Quantity:</label>
             <input type='number' id='quantity' value={quantity} className='form-control' 
