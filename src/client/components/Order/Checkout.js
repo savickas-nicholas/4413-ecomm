@@ -28,7 +28,7 @@ export default function Checkout() {
   const [cardCode, setCardCode] = useState();
 
   const { currentUser } = useOutletContext();
-  
+
   const navigate = useNavigate();
 
   // add load state from localStorage
@@ -124,6 +124,11 @@ export default function Checkout() {
     
     http.post('api/orders/', payload).then(res => {
       console.log(res);
+      
+      // clear cart
+      cartService.clearCart();
+      
+      // go to order summary page
       navigate(`/orders/${res.data.order._id}`, { replace: true });
     }).catch(err => {
       console.log(err);

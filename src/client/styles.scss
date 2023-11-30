@@ -297,7 +297,7 @@ i:hover {
 }
 
 // for elements on opposite sides of the container
-.flex-spread {
+.flex-row-spread {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -325,18 +325,18 @@ i:hover {
   gap: 25px;
 }
 
+.flex-column-align-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
 
 .flex-centered {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-}
-
-
-.flex-column-align-center {
-  display: flex;
-  flex-direction: column;
   align-items: center;
 }
 

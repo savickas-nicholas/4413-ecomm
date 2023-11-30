@@ -35,7 +35,7 @@ export default function Catalog() {
               <input type='search' placeholder='search' className='form-control' />
             </div>
 
-            <div className='flex-spread resultsHeader'>
+            <div className='flex-row-spread resultsHeader'>
               <div>N Results</div>
               <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

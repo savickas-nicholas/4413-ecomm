@@ -16,6 +16,7 @@ export default function App() {
 
   const [message, setMessage] = useState('');
   const [alertState, setAlertState] = useState(null);
+  const [alertTimeout, setAlertTimeout] = useState(null);
 
   const navigate = useNavigate();
   usageTracker();
@@ -36,12 +37,19 @@ export default function App() {
 
   // create new Alert
   const createAlert = (msg, state) => {
+    // if new alert, clear old alerts
+    if(alertTimeout) {
+      clearTimeout(alertTimeout);
+      setAlertTimeout(null);
+    }
     setMessage(msg);
     setAlertState(state);
-    setInterval(() => {
+    let timeout = setTimeout(() => {
       setMessage('');
       setAlertState(null);
+      setAlertTimeout(null);
     }, 5000);
+    setAlertTimeout(timeout);
   }
 
   // log out

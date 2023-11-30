@@ -7,26 +7,22 @@ export const getContents = () => {
   return contents;
 }
 
-export const addToCart = (item, quantity) => {
-  let exists = false;
-  contents = contents.map(elem => {
-    if(elem.item._id !== item._id) {
-      return elem;
-    } else {
-      exists = true;
-      return {
-        quantity: Number.parseInt(elem.item.quantity) + quantity,
-        item,
-      }
+// get current quantity for specific vehicle
+export const getCurrentQuantity = (id) => {
+  let quantity = 0;
+  for(let elem of contents) {
+    if(elem.item._id === id) {
+      quantity = elem.quantity;
     }
-  })
-
-  if(!exists) {
-    contents.push({
-      quantity,
-      item
-    });
   }
+  return quantity;
+}
+
+export const addToCart = (item, quantity) => {
+  contents.push({
+    quantity,
+    item
+  });
   localStorage.setItem('cart', JSON.stringify(contents));
 }
 
@@ -37,11 +33,11 @@ export const removeFromCart = (id) => {
   localStorage.setItem('cart', JSON.stringify(contents));
 }
 
-export const updateCart = (item, quantity) => {
+export const updateCart = (id, quantity) => {
   contents = contents.map(elem => {
-    return elem.item._id === item._id ? {
+    return elem.item._id === id ? {
       quantity,
-      item
+      item: elem.item
     } : elem; 
   });
   localStorage.setItem('cart', JSON.stringify(contents));
