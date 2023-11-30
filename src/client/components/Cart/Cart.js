@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-
+import { useOutletContext } from 'react-router-dom';
 
 import * as cartService from '../Cart/CartService';
 
@@ -8,24 +8,38 @@ import * as cartService from '../Cart/CartService';
 export default function Cart() {
   const [items, setItems] = useState([]);
 
+  const { createAlert } = useOutletContext();
+
   // load cart items on load
   useEffect(() => {
     setItems(cartService.getContents());
   }, []);
 
 
-  const handleUpdateCart = (id, quantity) => {
-    //cartService.updateCart(id);
+  const handleUpdateCart = (vehicle, quantity) => {
+    if(quantity < 1) {
+      createAlert("Quantity cannot be <1!", "warning");
+      return;
+    }
+    if(quantity > vehicle.quantity) {
+      createAlert("Quantity cannot exceed total stock!", "warning");
+      quantity = vehicle.quantity;
+    }
+
+    cartService.updateCart(vehicle._id, quantity);
+    createAlert("Quantity updated!", "success");
     setItems(cartService.getContents());
   }
 
   const handleRemoveFromCart = (id) => {
     cartService.removeFromCart(id);
+    createAlert("Successfully removed from cart!", "success");
     setItems(cartService.getContents());
   }
 
   const handleClearCart = () => {
     cartService.clearCart();
+    createAlert("Cart cleared!", "success");
     setItems(cartService.getContents());
   }
 
@@ -44,8 +58,9 @@ export default function Cart() {
                     <div>{`${vehicle.brand} ${vehicle.model}`}</div>
                     <div className='actionBar flex-row'>
                       <div>
-                        Quantity: <input type='number' value={el.quantity}  
-                          onChange={(e) => handleUpdateCart(vehicle._id, e.target.value)} />
+                        Quantity: <input type='number' value={el.quantity} 
+                          min='1' max={vehicle.quantity} step='1'
+                          onChange={(e) => handleUpdateCart(vehicle, e.target.value)} />
                       </div>
                       <div className='false-link' 
                         onClick={(e) => handleRemoveFromCart(el.item._id)}>Remove</div>
