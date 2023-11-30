@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 
 const UsageSchema = new Schema({
     date: Date,
-    userId: String,
     timeSpent: Number,
     pageViewed: String
 })
