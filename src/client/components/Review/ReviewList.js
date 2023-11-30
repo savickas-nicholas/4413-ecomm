@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
+import http from '../../util/httpCaller';
 
-export default function Review() {
+export default function ReviewList({ vehicleId }) {
 
-  const [review, SetReview] = useState(null);
+  const [reviews, setReviews] = useState([]);
 
-  const selectReviewModel = (index) => {
+  // populate reviews on page load
+  useEffect(() => {
+    http.get(`/api/reviews/`, { 
+        params: { vehicle: vehicleId }
+      }).then((res) => {
+        let reviews = res.data.reviews;
+        setReviews(reviews);
+    });
+  }, []);
 
-  }
 
   return (
     <div>

@@ -1,5 +1,9 @@
 
+
+import crypto from 'crypto';
+
 import { getCache } from '../cache';
+
 
 /**
  * validate payment
@@ -19,10 +23,11 @@ export const processPayment = async (req, res) => {
 
   if(counter < 2) {
     await cache.set("paymentCounter", counter + 1)
-    return res.status(200).json({ message: "Payment Approved." });
+    let token = crypto.randomBytes(20).toString('hex');
+    return res.status(200).json({ message: "Payment Approved.", token });
   } else {
     await cache.set("paymentCounter", 0)
-    return res.status(404).json({ message: 'Credit Card Authorization Failed.' });
+    return res.status(404).json({ message: 'Credit Card Authorization Failed.', token: null });
   }
 };
 

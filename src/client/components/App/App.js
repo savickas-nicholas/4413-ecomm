@@ -93,7 +93,7 @@ export default function App() {
       </div>
       
       <div className="container">
-        <Outlet context={{ logIn, createAlert }} />
+        <Outlet context={{ logIn, createAlert, currentUser }} />
       </div>
       <Footer />
     </React.Fragment>

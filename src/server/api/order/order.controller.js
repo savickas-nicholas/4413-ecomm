@@ -36,12 +36,13 @@ export const getOrderById = async (req, res) => {
 *  deliveryDate
 *  deliveryAddress
 *  paymentToken
-*  products
+*  vehicles
 *  user
 */
 export const addOrder = async (req, res) => {
   /* should perform validation of 'req.body' fields (e.g. must have Name/Email/Password) */
-  
+  console.log(req.body);
+
   try {
     let order = await Order.create(req.body);
     return res.status(201).json({ order });

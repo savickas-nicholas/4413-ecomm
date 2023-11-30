@@ -15,8 +15,8 @@ export const addToCart = (item, quantity) => {
     } else {
       exists = true;
       return {
+        quantity: Number.parseInt(elem.item.quantity) + quantity,
         item,
-        quantity: elem.item.quantity + quantity
       }
     }
   })
@@ -31,10 +31,8 @@ export const addToCart = (item, quantity) => {
 }
 
 export const removeFromCart = (id) => {
-  contents = contents.map(elem => {
-    if(elem.item._id !== id) {
-      return elem
-    }
+  contents = contents.filter(elem => {
+    return elem.item._id !== id
   })
   localStorage.setItem('cart', JSON.stringify(contents));
 }
@@ -53,7 +51,6 @@ export const updateCart = (item, quantity) => {
 export const initCart = () => {
   const cart = localStorage.getItem('cart');
   contents = cart ? JSON.parse(cart) : [];
-  console.log('init --> ', contents)
 }
 
 export const clearCart = () => {

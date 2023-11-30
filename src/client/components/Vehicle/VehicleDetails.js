@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import LoanCalculator from '../LoanCalculator/LoanCalculator';
+import ReviewList from '../Review/ReviewList';
 
 import * as cartService from '../Cart/CartService';
 
@@ -13,6 +14,7 @@ export default function VehicleDetails() {
   const [vehicle, setVehicle] = useState({});
 
   let { vehicleId } = useParams();
+  
 
   useEffect(() => {
     http.get(`/api/vehicles/${vehicleId}`).then((res) => {
@@ -46,6 +48,8 @@ export default function VehicleDetails() {
         </div>
 
         <LoanCalculator propPrice={vehicle.price} />
+
+        <ReviewList vehicleId={vehicleId} />
     </div>
   );
 }
