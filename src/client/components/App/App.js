@@ -8,6 +8,7 @@ import Alert from '../Alert/Alert';
 
 import * as auth from '../../util/AuthService';
 import * as cartService from '../Cart/CartService';
+import usageTracker from '../../util/UsageService';
 
 
 export default function App() {
@@ -15,31 +16,39 @@ export default function App() {
 
   const [message, setMessage] = useState('');
   const [alertState, setAlertState] = useState(null);
+  const [alertTimeout, setAlertTimeout] = useState(null);
 
   const navigate = useNavigate();
+  usageTracker();
 
-  // populate currentUser from localStorage on page load
+  // on page load
   useEffect(() => {
+    // populate currentUser from localStorage on page load
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (currentUser) {
      setCurrentUser(currentUser);
     }
-  }, []);
 
-  // populate cart from localStorage on page load
-  useEffect(() => {
+    // populate cart from localStorage on page load
     cartService.initCart();
   }, []);
 
 
   // create new Alert
   const createAlert = (msg, state) => {
+    // if new alert, clear old alerts
+    if(alertTimeout) {
+      clearTimeout(alertTimeout);
+      setAlertTimeout(null);
+    }
     setMessage(msg);
     setAlertState(state);
-    setInterval(() => {
+    let timeout = setTimeout(() => {
       setMessage('');
       setAlertState(null);
+      setAlertTimeout(null);
     }, 5000);
+    setAlertTimeout(timeout);
   }
 
   // log out
@@ -47,8 +56,8 @@ export default function App() {
     auth.removeAuthToken();
     localStorage.removeItem('currentUser');
     setCurrentUser(null);
-    createAlert('Logout Successful!', 'Success');
-    navigate('/login');
+    createAlert('Logout Successful!', 'success');
+    //navigate('/login'); // maybe change to last page
   }
 
   // log in
@@ -56,7 +65,8 @@ export default function App() {
     auth.setAuthToken(token);
     localStorage.setItem('currentUser', JSON.stringify(user));
     setCurrentUser(user);
-    createAlert('Login Successful!', 'Success')
+    createAlert('Login Successful!', 'success');
+    navigate('/', { replace: true }); // change to last page
   }
   
 
@@ -93,7 +103,7 @@ export default function App() {
       </div>
       
       <div className="container">
-        <Outlet context={{ logIn, createAlert }} />
+        <Outlet context={{ logIn, createAlert, currentUser }} />
       </div>
       <Footer />
     </React.Fragment>

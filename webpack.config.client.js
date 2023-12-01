@@ -117,6 +117,9 @@ module.exports = function(env) {
         process: "process/browser",
         path: require.resolve("path-browserify")
       },*/
+      fallback: {
+        'crypto': false
+      },
       extensions: ['*', '.js', '.jsx'],
     },
     plugins,

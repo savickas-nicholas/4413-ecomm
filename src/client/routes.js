@@ -15,6 +15,8 @@ import LoginPage from './components/Auth/LoginPage';
 
 
 import Cart from './components/Cart/Cart';
+import Checkout from './components/Order/Checkout';
+import Summary from './components/Order/Summary';
 
 import Catalog from './components/Vehicle/VehicleCatalog';
 import VehicleDetails from './components/Vehicle/VehicleDetails';
@@ -47,6 +49,14 @@ export default [
       {
         path: "/cart",
         element: <Cart />,
+      },
+      {
+        path: "/checkout",
+        element: <Checkout />,
+      },
+      {
+        path: "/orders/:id",
+        element: <Summary />,
       },
     ],
   },

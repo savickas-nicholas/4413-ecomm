@@ -58,7 +58,7 @@ export default function LoanCalculator({ propPrice }) {
       payment = remainder / period;
     }
 
-    setMonthlyPayment(payment);
+    setMonthlyPayment(payment.toFixed(2));
   }
 
   return (
@@ -97,8 +97,8 @@ export default function LoanCalculator({ propPrice }) {
             </div>
           </div>
         </div>
-        <div className='flex-centered'>
-          <div>Monthly Payment: { monthlyPayment || 'NA' }</div>
+        <div className='flex-centered fill'>
+          <div>Monthly Payment: ${ monthlyPayment || 'NA' }</div>
         </div>
       </div>
     </div>

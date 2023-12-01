@@ -1,10 +1,9 @@
 
 import crypto from 'crypto';
-
-const authTypes = ['github', 'twitter', 'facebook', 'google'];
-
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
+
+const authTypes = ['github', 'twitter', 'facebook', 'google'];
 
 export const UserSchema = new Schema({
   name: {
@@ -104,7 +103,8 @@ UserSchema
   .get(function() {
     return {
       'name': this.name,
-      'role': this.role
+      'role': this.role,
+      '_id': this._id,
     };
   });
 

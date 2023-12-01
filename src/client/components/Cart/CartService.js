@@ -7,43 +7,37 @@ export const getContents = () => {
   return contents;
 }
 
-export const addToCart = (item, quantity) => {
-  let exists = false;
-  contents = contents.map(elem => {
-    if(elem.item._id !== item._id) {
-      return elem;
-    } else {
-      exists = true;
-      return {
-        item,
-        quantity: elem.item.quantity + quantity
-      }
+// get current quantity for specific vehicle
+export const getCurrentQuantity = (id) => {
+  let quantity = 0;
+  for(let elem of contents) {
+    if(elem.item._id === id) {
+      quantity = elem.quantity;
     }
-  })
-
-  if(!exists) {
-    contents.push({
-      quantity,
-      item
-    });
   }
+  return quantity;
+}
+
+export const addToCart = (item, quantity) => {
+  contents.push({
+    quantity,
+    item
+  });
   localStorage.setItem('cart', JSON.stringify(contents));
 }
 
 export const removeFromCart = (id) => {
-  contents = contents.map(elem => {
-    if(elem.item._id !== id) {
-      return elem
-    }
+  contents = contents.filter(elem => {
+    return elem.item._id !== id
   })
   localStorage.setItem('cart', JSON.stringify(contents));
 }
 
-export const updateCart = (item, quantity) => {
+export const updateCart = (id, quantity) => {
   contents = contents.map(elem => {
-    return elem.item._id === item._id ? {
+    return elem.item._id === id ? {
       quantity,
-      item
+      item: elem.item
     } : elem; 
   });
   localStorage.setItem('cart', JSON.stringify(contents));
@@ -53,7 +47,6 @@ export const updateCart = (item, quantity) => {
 export const initCart = () => {
   const cart = localStorage.getItem('cart');
   contents = cart ? JSON.parse(cart) : [];
-  console.log('init --> ', contents)
 }
 
 export const clearCart = () => {

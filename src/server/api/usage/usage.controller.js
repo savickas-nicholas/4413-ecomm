@@ -17,13 +17,12 @@ const getUsageStatistics = async (req, res) => {
 
 const addUsageStatistic = async (req, res) => {
     const {
-        token,
         timeSpent,
         pageViewed
     } = req.body;
 
     try {
-        await addNewUsageStatistic(token, timeSpent, pageViewed);
+        await addNewUsageStatistic(timeSpent, pageViewed);
         return res.status(201).send('Usage statistic added');
     } catch (err) {
         handleError(res, err);

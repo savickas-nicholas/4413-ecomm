@@ -1,52 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useOutletContext } from 'react-router-dom';
 
 
-export default function Review() {
+import http from '../../util/httpCaller';
 
-  const [review, SetReview] = useState(null);
+import ReviewForm from './ReviewForm';
 
-  const selectReviewModel = (index) => {
+export default function ReviewList({ vehicleId }) {
+  const [formActive, setFormActive] = useState(false);
+  const [reviews, setReviews] = useState([]);
 
+  const { createAlert, currentUser } = useOutletContext();
+
+  // populate reviews on page load
+  useEffect(() => {
+    http.get(`/api/reviews/`, { 
+        params: { vehicle: vehicleId }
+      }).then((res) => {
+        let reviews = res.data.reviews;
+        setReviews(reviews);
+    });
+  }, []);
+
+
+  const addReview = (payload) => {
+    payload.vehicle = vehicleId;
+    payload.author = currentUser._id;
+    console.log(payload)
+
+    http.post(`/api/reviews/`, payload).then((res) => {
+      console.log(res);
+      let newReviews = reviews;
+      newReviews.push(res.data.review);
+      createAlert("Review published!", "success");
+      setReviews(newReviews);
+      setFormActive(false);
+    }).catch(err => {
+      console.log(err);
+    })
   }
 
   return (
     <div>
-      <h1>Reviews for Vehicle Name</h1>
-      <ul>
-        <li>
-          { /** Expands a model to show the review when clicked */ }
-          <div onClick={() => selectReviewModel}>
-            <h3>
-              Title
-              <div>Rating</div>
-            </h3>
-            <h4>Author</h4>
-            <p>Review Summary</p>
-          </div>
-        </li>
-
-        <li>
-          <div onClick={() => selectReviewModel}>
-            <h3>
-              Title
-              <div>Rating</div>
-            </h3>
-            <h4>Author</h4>
-            <p>Review Summary</p>
-          </div>
-        </li>
-
-        <li>
-          <div onClick={() => selectReviewModel}>
-            <h3>
-              Title
-              <div>Rating</div>
-            </h3>
-            <h4>Author</h4>
-            <p>Review Summary</p>
-          </div>
-        </li>
-      </ul>
+      <div>Reviews</div>
+      { reviews.length > 0 ?  
+        <div>
+          { reviews.map(r => {
+            return (
+              <div>
+                <div>Rating: {r.rating}</div>
+                <div>Title: {r.title}</div>
+                <div>Summary: {r.summary}</div>
+              </div>
+            )
+          })}
+        </div>
+        : 
+        <div>There are no reviews for this model.</div>
+      }
+      { currentUser && !formActive && 
+        <button onClick={() => setFormActive(true)}>Add Review</button>
+      } 
+      { currentUser && formActive &&  
+        <div>
+          <ReviewForm addReview={addReview} />
+          <button onClick={() => setFormActive(false)}>Cancel</button>
+        </div>
+      }
     </div>
   );
 }

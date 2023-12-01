@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Helmet from 'react-helmet';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 
-import axios from '../../util/httpCaller';
+import http from '../../util/httpCaller';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -11,21 +11,17 @@ export default function LoginPage() {
 
   const { logIn } = useOutletContext();
 
-  const navigate = useNavigate();
 
   const handleSubmit = (se) => {
     se.preventDefault();
     
-    axios.post('auth/local/', {
+    http.post('auth/local/', {
       email, 
       password, 
     }).then(res => {
-      console.log(res);
-
       const token = res.data.token;
       const user = res.data.user;
       logIn(user, token);
-      navigate('/', { replace: true });
     }).catch(err => {
       console.log(err);
     })

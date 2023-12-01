@@ -56,6 +56,10 @@ input::placeholder {
   color: green;
 }
 
+.whiteText {
+  color: white;
+}
+
 .center {
   width: 100vw;
   display: flex;
@@ -182,6 +186,21 @@ span.pull-right {
 }
 
 
+
+.false-link {
+  cursor: pointer;
+  color: #007185;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+
+
+
+
+
 /* Header Styles */
 
 h1 {
@@ -253,6 +272,7 @@ i:hover {
 }
 
 
+
 /* Layouts */
 
 // ROWS
@@ -273,11 +293,11 @@ i:hover {
 .flex-row {
   display: flex;
   flex-direction: row;
-  gap: 5px;
+  gap: 10px;
 }
 
 // for elements on opposite sides of the container
-.flex-spread {
+.flex-row-spread {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -289,6 +309,13 @@ i:hover {
 .flex-column {
   display: flex;
   flex-direction: column;
+  gap: 10px;
+}
+
+.flex-column-spread {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 // has a big gap
@@ -298,17 +325,27 @@ i:hover {
   gap: 25px;
 }
 
+.flex-column-align-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
 
 .flex-centered {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex: 10;
 }
 
 
 
+// FLEX CHILDREN
 
+.fill {
+  flex: 10;
+}
 
 
