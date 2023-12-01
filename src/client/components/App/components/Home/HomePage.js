@@ -14,7 +14,7 @@ export default function Home() {
         <div className="content content-text">
           <h2>Offering Affordable Approvals for Credit</h2>
           <p>Browse our catalog to find out how you can save on high quality, brand name vehicles</p>
-          <button type="button" class="btn btn-outline-secondary" onClick={() => {}}>Explore More</button>
+          <button type="button" className="btn btn-outline-secondary" onClick={() => {}}>Explore More</button>
         </div>
         <div className="content">
           <img src={cars_image1} className="img-fluid content-image" style={{height: '50%'}} />
@@ -31,7 +31,7 @@ export default function Home() {
         <div className="content content-text">
           <h2>Find Out More</h2>
           <p>Have any questions? View our FAQ and get assistance from our chatbot</p>
-          <button type="button" class="btn btn-outline-secondary" onClick={() => {}}>View More</button>
+          <button type="button" className="btn btn-outline-secondary" onClick={() => {}}>View More</button>
         </div>
       </div>
 
@@ -40,7 +40,7 @@ export default function Home() {
         <div className="content content-text">
           <h2>Fidn The Perfect Match</h2>
           <p>Allow us to select and recommend vehicles that match your preferences</p>
-          <button type="button" class="btn btn-outline-secondary" onClick={() => {}}>Get Recommendation</button>
+          <a type="button" href='/vehicles/recommendations' className="btn btn-outline-secondary">Get Recommendation</a>
         </div>
         <div className="content">
           <img src={car_shop} className="img-fluid content-image" />

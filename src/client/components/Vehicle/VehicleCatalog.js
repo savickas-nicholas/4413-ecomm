@@ -271,6 +271,41 @@ export default function Catalog() {
             </div>
 
             <div className='vehicleList'>
+                { vehicles.map(vehicle => {
+                  return (
+                    <a href={`/vehicles/${vehicle._id}`} className='card flex-row vehicle-container element-link'>
+                      <img src={getImageByPath(vehicle.imgPath)} />
+                      <div className="vehicle-info">
+                        <h6><b>{vehicle.name}</b></h6>
+                        <h4><strong>${vehicle.price}</strong></h4>
+                        <div className="customizations">
+                          <div className="customization">
+                            <FontAwesomeIcon icon="calendar" />
+                            <p>{vehicle.year}</p>
+                          </div>
+
+                          <div className="customization">
+                            <FontAwesomeIcon icon="gas-pump" />
+                            <p>{vehicle.customizations.engine}</p>
+                          </div>
+
+                          <div className="customization">
+                            <FontAwesomeIcon icon="people-line" />
+                            <p>{vehicle.customizations.numPassengers}</p>
+                          </div>
+                          
+                        </div>
+                        <hr className="bg-dark" />
+                        <div>
+                          Reviews
+                        </div>
+                      </div>
+                    </a>
+                  );
+                })}
+            </div>
+
+            <div className='vehicleList'>
                 { filteredVehicles.map(vehicle => {
                   return (
                     <div className='card flex-row vehicle-container'>

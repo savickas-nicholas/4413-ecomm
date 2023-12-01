@@ -5,6 +5,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Alert from '../Alert/Alert';
+import Chatbot from '../Chatbot/Chatbot';
 
 import * as auth from '../../util/AuthService';
 import * as cartService from '../Cart/CartService';
@@ -101,6 +102,8 @@ export default function App() {
         <Header isLoggedIn={currentUser !== null} logOut={logOut}  />
         <Alert message={message} alertState={alertState} />
       </div>
+
+      <Chatbot />
       
       <div className="container">
         <Outlet context={{ logIn, createAlert, currentUser }} />

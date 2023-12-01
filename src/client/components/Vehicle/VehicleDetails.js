@@ -59,12 +59,10 @@ export default function VehicleDetails() {
     }
   }
 
-  console.log(vehicle)
-
   return (
     <div className='flex-column-sections'>
         <div className='detailsHeader flex-row-spread'>
-          <div>{vehicle.brand} {vehicle.model}</div>
+        <div>{vehicle.year} {vehicle.brand} {vehicle.model}</div>
           <div>${vehicle.price}</div>
         </div>
 
@@ -89,7 +87,9 @@ export default function VehicleDetails() {
         </div>
 
         <div className='description'>
-
+          <div>Mileage: {vehicle.miles} {vehicle.milesUnits}</div>
+          <div>Description: {vehicle.description}</div>
+          <a href={`/vehicles/${vehicle._id}/compare`} className='btn btn-secondary'>Compare</a>
         </div>
 
         <LoanCalculator propPrice={vehicle.price} />

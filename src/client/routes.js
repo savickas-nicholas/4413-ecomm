@@ -20,6 +20,8 @@ import Summary from './components/Order/Summary';
 
 import Catalog from './components/Vehicle/VehicleCatalog';
 import VehicleDetails from './components/Vehicle/VehicleDetails';
+import Recommendations from './components/Vehicle/Recommendations';
+import Comparison from './components/Vehicle/Comparison';
 
 export default [
   {
@@ -37,6 +39,14 @@ export default [
       {
         path: "/vehicles/:vehicleId",
         element: <VehicleDetails />,
+      },
+      {
+        path: "/vehicles/recommendations",
+        element: <Recommendations />,
+      },
+      {
+        path: "/vehicles/:vehicleId/compare",
+        element: <Comparison />,
       },
       {
         path: "/register",
