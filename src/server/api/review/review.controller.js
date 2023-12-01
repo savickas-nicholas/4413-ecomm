@@ -4,7 +4,7 @@ import Review from './review.model';
 // Get list of reviews
 export const searchReviews = async (req, res) => {
   try {
-    let reviews = await Review.find(req.query);
+    let reviews = await Review.find(req.query).populate('author', '_id name');
     return res.status(200).json({reviews});
   } catch(err) {
     return handleError(res, err);

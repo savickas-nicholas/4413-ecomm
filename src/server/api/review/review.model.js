@@ -16,7 +16,7 @@ export const ReviewSchema = new Schema({
   rating: {
     type: Number,
   	min: 1,
-  	max: 10,
+  	max: 5,
     required: 'You must provide a rating.'
   }, 
   author: {
