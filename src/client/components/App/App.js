@@ -97,7 +97,7 @@ export default function App() {
           },
         ]}
       />
-      <div className="header">
+      <div>
         <Header isLoggedIn={currentUser !== null} logOut={logOut}  />
         <Alert message={message} alertState={alertState} />
       </div>
