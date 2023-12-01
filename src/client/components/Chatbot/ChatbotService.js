@@ -35,9 +35,9 @@ const questionMap = {
 }
 
 const answerMap = {
-  'I would like to register an account.': '',
-  'I would like to login.': '',
-  'I would like to go to my shopping cart.': '',
+  'I would like to register an account.': 'test',
+  'I would like to login.': 'best',
+  'I would like to go to my shopping cart.': 'rest',
   'I would like to add a vehicle to my shopping cart.': '',
   'I would like to checkout.': '',
   'I would like to view the status of an order.': '',
@@ -45,6 +45,16 @@ const answerMap = {
   'I would like to see what vehicles are available.': '',
   'I would like to compare multiple vehicles.': '',
 };
+
+const additionalQuestionMap = {
+
+}
+
+const finalUserResponse = [
+  'Thank you.',
+  'I have another question.'
+]
+
 
 
 export const getWelcome = () => {
@@ -59,9 +69,23 @@ export const getReply = (question, choice) => {
 
   let text;
   let choices;
-  if(question === 'Hello. How can I help you today?') {
+  const re1 = /How can I help you/;
+  if(re1.test(question)) {
     text = `What would you like to do regarding ${choice}?`;
     choices = questionMap[choice];
+  }
+
+  const re2 = /What would you like to do regarding/;
+  if(re2.test(question)) {
+    text = answerMap[choice];
+    choices = finalUserResponse;
+  }
+
+  if(finalUserResponse.includes(choice)) {
+    return {
+      text: 'No problem. How can I help you today?',
+      choices: welcomeRepo, 
+    };
   }
 
   return {
