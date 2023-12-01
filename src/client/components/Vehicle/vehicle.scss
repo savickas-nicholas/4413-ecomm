@@ -1,3 +1,104 @@
+$color1: #C3976B;
+$color2: #B68555;
 
+.sidebar-container {
+    padding: 1rem;
+    background-color: $color1;
+    width: 25vw;
+}
 
+.priceRange, .check-input-container {
+    display: flex;
+    flex-flow: row nowrap;
+    align-content: center;
+}
 
+.priceRange {
+    align-items: center;
+}
+
+.priceRange * {
+    width: 100%;
+    margin: 5%;
+}
+
+.sidebar-filter {
+    background-color: $color2;
+    padding: 0.5rem;
+    margin: 1rem 0 1rem 0;
+}
+
+.sidebar-check-input {
+    position: relative !important;
+    margin: 0 0.5rem 0 0 !important;
+    border: 2px solid black;
+}
+
+.sidebar-expand {
+    color: blue;
+}
+
+.sidebar-radio {
+    position: relative !important;
+    margin: 0.2em 0.5rem 0 0 !important;
+    border: 2px solid black;
+}
+
+.sidebar-reset {
+    background-color: $color1;
+    border: 2px solid black;
+    width: 100%;
+    padding: 2%;
+    margin-top: 5%;
+}
+
+.results-header {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-bottom: 5%;
+}
+
+.results-header * {
+    flex: 1;
+}
+
+.catalog-sort {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+.catalog-container {
+    margin-left: 5%;
+}
+
+.vehicle-container {
+    padding: 2%;
+    background-color: $color1 !important;
+    margin-bottom: 5%;
+}
+
+.vehicle-info {
+    margin: 5% 2% 5% 2%;
+}
+
+.customizations {
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    height: auto;
+    justify-content: space-between;
+    margin-top: 5%;
+}
+
+.customization {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.customization > * {
+    margin-right: 0.5rem;
+}
+
+.customization > *:last-child {
+    margin-right: 0;
+}

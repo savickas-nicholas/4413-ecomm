@@ -6,10 +6,12 @@ const Schema = mongoose.Schema;
 const units = ['km', 'mpg'];
 
 const CustomizationSchema = new Schema({
+    // New or old
     condition: { type: String, default: '' },
     colour: { type: String, default: '' },
-    trim: { type: String, default: '' },
-    engine: { type: String, default: '' }
+    // Petrol, diesel or electric
+    engine: { type: String, default: '' },
+    numPassengers: { type: Number, default: 4 }
 });
 
 export const VehicleSchema = new Schema({
@@ -22,6 +24,7 @@ export const VehicleSchema = new Schema({
     price: { type: Number, required: true, min: [0.0, "Must have non-negative price"] },
     miles: { type: Number, default: 0, min: [0, "Must have non-negative mileage"] },
     milesUnits: { type: String, default: "km" },
+    imgPath: { type: String, default: "" },
     activeDeal: { type: Boolean, default: false },
     customizations: {
         type: CustomizationSchema, 
