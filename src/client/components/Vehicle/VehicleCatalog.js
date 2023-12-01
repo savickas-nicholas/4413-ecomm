@@ -102,7 +102,7 @@ export default function Catalog() {
 
   return (
     <div className='flex-sidebar-content'>
-        <div className='sidebar sidebar-container'>
+        <div className='sidebar-container'>
             <h4>Filter</h4>
             <hr className="bg-dark" />
 
