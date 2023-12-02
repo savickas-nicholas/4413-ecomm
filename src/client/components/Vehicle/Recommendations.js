@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Helmet from 'react-helmet';
 
-import getImageByPath from '../../util/CarImageService';
+import getImageByPath from '../../util/ImageService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import http from '../../util/httpCaller';

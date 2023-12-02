@@ -26,10 +26,10 @@ export const VehicleSchema = new Schema({
     milesUnits: { type: String, default: "km" },
     imgPath: { type: String, default: "" },
     activeDeal: { type: Boolean, default: false },
-    customizations: [{
+    customizations: {
         type: CustomizationSchema, 
         default: () => ({})
-    }]
+    }
 });
 
 VehicleSchema.path('milesUnits').validate(
