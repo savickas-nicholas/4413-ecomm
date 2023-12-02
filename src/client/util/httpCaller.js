@@ -1,12 +1,10 @@
 import axios from 'axios';
-//import config from '../../server/config/environment';
+import config from '../../server/config/environment';
 
-export const BASE_URL = 'http://localhost:3001/';
-
-
-/*(typeof window === 'undefined' || process.env.NODE_ENV === 'test') ?
+export const BASE_URL = (typeof window === 'undefined' || process.env.NODE_ENV === 'test') ?
   process.env.BASE_URL || (`http://localhost:${process.env.PORT || config.port}`) :
-  '/';*/
+  '/';
+
 
 var instance = axios.create({});
 
