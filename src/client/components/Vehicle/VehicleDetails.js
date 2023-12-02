@@ -6,6 +6,7 @@ import LoanCalculator from '../LoanCalculator/LoanCalculator';
 import ReviewList from '../Review/ReviewList';
 
 import * as cartService from '../Cart/CartService';
+import getImageByPath from '../../util/ImageService';
 
 import http from '../../util/httpCaller';
 
@@ -60,21 +61,23 @@ export default function VehicleDetails() {
   }
 
   return (
-    <div className='flex-column-sections'>
-        <div className='detailsHeader flex-row-spread'>
-        <div>{vehicle.year} {vehicle.brand} {vehicle.model}</div>
-          <div>${vehicle.price}</div>
-        </div>
+    <div className='flex-column-sections detailsContainer'>
+      <div className='detailsHeader flex-row-spread'>
+        <div className="detailsName">{vehicle.year} {vehicle.brand} {vehicle.model}</div>
+        <div className="detailsPrice">${vehicle.price}</div>
+      </div>
 
-        <img src={`${vehicle.brand}_${vehicle.model}.jpg`} />
+        <div className='detailsImgContainer'>
+          <img src={getImageByPath(vehicle.imgPath)} className="detailsImg" />
+        </div>
 
         <div className='details'>
           <div className='customizations'>
-            { vehicle.customizations && vehicle.customizations.map(c => {
+            {/* { vehicle.customizations && vehicle.customizations.map(c => {
               return (
                 <div></div>
               )
-            }) }
+            }) } */}
           </div>
           
           <div className='form-group'>
