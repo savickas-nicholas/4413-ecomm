@@ -1,7 +1,9 @@
 
-$color1: #C3976B;
-$color2: #B68555;
+$color1: #c4c5c7;
+$color2: #b3b4b5;
 $color3: #FAF0E6;
+$light: #f8f8f8;
+$dark: #E0E1E4;
 
 .sidebar-container {
     padding: 1rem;
@@ -130,7 +132,7 @@ $color3: #FAF0E6;
 }
 
 .detailsHeader {
-    margin: 0 20% 0 20%;
+    margin: 5% 10% 2% 10%;
     align-items: center;
 }
 
@@ -140,7 +142,7 @@ $color3: #FAF0E6;
 
 .detailsPrice {
     border: 1px solid black;
-    padding: 1% 2% 1% 2%;
+    padding: 1% 10% 1% 10%;
 }
 
 .detailsImg {
@@ -153,4 +155,83 @@ $color3: #FAF0E6;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+
+.vehicleCustomizations {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+zxa
+.vehicleDetails {
+    border: 2px solid black;
+    padding: 5%;
+}
+
+.vehicleCompare {
+    background-color: $color1;
+    width: 100%;
+    align-self: center;
+}
+
+.comparisonContent {
+    text-align: center;
+}
+
+.comparisonHeader {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.comparisonContainer {
+    display: flex;
+    flex-flow: column nowrap;
+    margin-bottom: 5%;
+}
+
+.comparisonList {
+    display: flex;
+    flex-flow: row nowrap;
+    overflow-x: auto;
+    height: fit-content;
+}
+
+.customizationVehicle {
+    padding: 2%;
+}
+
+.comparisonItem {
+    border: 2px solid black;
+    margin-left: 1%;
+}
+
+.selectedComparisonItem {
+    border: 5px solid blue;
+    margin-left: 1%;
+}
+
+.comparisonCustomization {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.comparisonGrid {
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    width: 100%;
+}
+
+.comparisonGridItem {
+    padding: 10px;
+    text-align: center;
+}
+
+.comparisonLight {
+    background-color: $light;
+}
+
+.comparisonDark {
+    background-color: $dark;
 }

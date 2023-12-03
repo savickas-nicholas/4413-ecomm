@@ -1,7 +1,5 @@
 
-import jwt from "jsonwebtoken";
 import Usage from "./usage.model"
-import config from "../../config/environment"
 
 const createUsageStatistics = async (startDateText, endDateText) => {
     const startDateTimestamp = Date.parse(startDateText);
@@ -17,15 +15,11 @@ const createUsageStatistics = async (startDateText, endDateText) => {
     return usages;
 };
 
-const addNewUsageStatistic = async (token, timeSpent, pageViewed) => {
-    const decoder = jwt.verify(token, config.secrets.session)
-    const userId = decoder._id;
-
+const addNewUsageStatistic = async (timeSpent, pageViewed) => {
     const usage = {
-        userId,
+        date: new Date(),
         timeSpent: parseInt(timeSpent),
-        pageViewed,
-        date: new Date()
+        pageViewed
     };
 
     await Usage.create(usage)

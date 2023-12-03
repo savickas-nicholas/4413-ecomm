@@ -5,7 +5,6 @@ export const BASE_URL = (typeof window === 'undefined' || process.env.NODE_ENV =
   process.env.BASE_URL || (`http://localhost:${process.env.PORT || config.port}`) :
   '/';
 
-
 var instance = axios.create({});
 
 instance.defaults.baseURL = BASE_URL;
