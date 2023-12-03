@@ -24,6 +24,7 @@ export const VehicleSchema = new Schema({
     price: { type: Number, required: true, min: [0.0, "Must have non-negative price"] },
     miles: { type: Number, default: 0, min: [0, "Must have non-negative mileage"] },
     milesUnits: { type: String, default: "km" },
+    // Chevrolet.png, Ford.png, etc. - save to a file system instead of storing image on db
     imgPath: { type: String, default: "" },
     activeDeal: { type: Boolean, default: false },
     customizations: {

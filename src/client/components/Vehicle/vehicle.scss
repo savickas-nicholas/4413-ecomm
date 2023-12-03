@@ -139,13 +139,8 @@ $dark: #E0E1E4;
 
 .detailsContainer {
     width: 100%;
-    background-color: $color3;
+    background-color: $light;
     padding: 0 2% 0 2%
-}
-
-.detailsHeader {
-    margin: 5% 10% 2% 10%;
-    align-items: center;
 }
 
 .detailsName {
@@ -153,20 +148,51 @@ $dark: #E0E1E4;
 }
 
 .detailsPrice {
-    border: 1px solid black;
-    padding: 1% 10% 1% 10%;
+    font-weight: bold;
+    font-size: 1.5rem;
 }
 
 .detailsImg {
     height: 50vh;
     width: 70%;
+    margin-bottom: 5%;
 }
 
-.detailsImgContainer {
+.detailsVehicle {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-top: 4%;
+    width: 100%;
+}
+
+.detailsImgReviewContainer {
   display: flex;
-  flex-direction: row;
+  flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
+  flex: 2;
+}
+
+.detailsSidebar {
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1;
+    padding: 1%;
+    text-align: center;
+}
+
+.detailsSidebar * {
+    margin: 5% 0 5% 0;
+}
+
+.detailsSelection {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 5%;
+}
+
+.detailsQuantity {
+    width: fit-content !important;
 }
 
 .vehicleCustomizations {
@@ -174,14 +200,13 @@ $dark: #E0E1E4;
     flex-flow: column nowrap;
     align-items: center;
 }
-zxa
-.vehicleDetails {
-    border: 2px solid black;
-    padding: 5%;
+
+.vehicleDetails, .vehicleDescription {
+    width: 100%;
+    text-align: start;
 }
 
 .vehicleCompare {
-    background-color: $color1;
     width: 100%;
     align-self: center;
 }

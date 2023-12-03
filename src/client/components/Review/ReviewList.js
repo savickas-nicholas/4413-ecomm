@@ -82,7 +82,6 @@ export default function ReviewList({ vehicleId }) {
         : 
         <div>There are no reviews for this model.</div>
       }
-      <hr />
       { currentUser && !formActive && 
       <div className='flex-column-align-center'>
         <button onClick={() => setFormActive(true)} className='btn btn-secondary'>Add Review</button>
@@ -96,7 +95,6 @@ export default function ReviewList({ vehicleId }) {
           </div>
         </div>
       }
-      <hr/>
     </div>
   );
 }
