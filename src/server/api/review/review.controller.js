@@ -25,6 +25,20 @@ export const getReview = async (req, res) => {
   }
 };
 
+export const getVehicleReviews = async (req, res) => {
+  try {
+    const vehicleId = req.params.vehicleId;
+
+    const reviews = await Review.find({ vehicle: vehicleId })
+      .populate('vehicle', '_id name')
+      .populate('author', '_id name');
+
+    res.json(reviews);
+  } catch (err) {
+    handleError(res, err);
+  }
+}
+
 /* Creates a new review in the DB.
 * Title
 * Summary
