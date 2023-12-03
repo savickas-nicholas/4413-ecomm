@@ -6,6 +6,7 @@ $light: #f8f8f8;
 $dark: #E0E1E4;
 
 .sidebar-container {
+    height: fit-content;
     padding: 1rem;
     background-color: $color1;
     width: 25vw;
@@ -101,6 +102,17 @@ $dark: #E0E1E4;
 .vehicle-info {
     margin: 5% 2% 5% 2%;
     width: 100%;
+}
+
+.hotDeal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: $color2;
+    color: black;
+    padding: 5px 10px;
+    font-weight: bold;
+    border-radius: 5px;
 }
 
 .customizations {
