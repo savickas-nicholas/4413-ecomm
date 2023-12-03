@@ -65,7 +65,7 @@ export default [
         element: <Checkout />,
       },
       {
-        path: "/orders/:id",
+        path: "/orders/:orderId",
         element: <Summary />,
       },
     ],
