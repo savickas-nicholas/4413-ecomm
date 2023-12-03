@@ -1,10 +1,10 @@
 
-import React, { useState, useEffect, useParams } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import getImageByPath from '../../util/ImageService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCalendar, faGasPump, faPeopleLine, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faCalendar, faGasPump, faPeopleLine } from '@fortawesome/free-solid-svg-icons';
 import './vehicle.scss';
 
 import http from '../../util/httpCaller';

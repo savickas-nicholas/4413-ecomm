@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { useParams, useOutletContext } from 'react-router-dom';
+import { useParams, useOutletContext, Link } from 'react-router-dom';
 
 import LoanCalculator from '../LoanCalculator/LoanCalculator';
 import ReviewList from '../Review/ReviewList';
@@ -73,45 +73,42 @@ export default function VehicleDetails() {
 
   return (
     <div className='flex-column-sections detailsContainer'>
-      <div className='detailsHeader flex-row-spread'>
-        <div className="detailsName">{vehicle.year} {vehicle.brand} {vehicle.model}</div>
-        <div className="detailsPrice"><b>{formatDollarValue(String(vehicle.price))}</b></div>
-      </div>
-
-        <div className='detailsImgContainer'>
+      <div className='detailsVehicle'>
+        <div className='detailsImgReviewContainer'>
           <img src={getImageByPath(vehicle.imgPath)} className="detailsImg" />
+
+          <ReviewList vehicleId={vehicleId} />
         </div>
 
-        <div className='details'>
-          <div className='form-group'>
-            <label htmlFor='quantity'>Quantity:</label>
-            <input type='number' id='quantity' value={quantity} className='form-control' 
-              step='1' min='1' max={vehicle.quantity} 
-              onChange={(e) => changeQuantity(e.target.value)} />
-          </div>
-          <button className='btn btn-secondary' onClick={() => addToCart()}>Add to Cart</button>
-        </div>
+        <div className="detailsSidebar">
+          <div className="detailsName">{vehicle.year} {vehicle.brand} {vehicle.model}</div>
+          <span className="detailsPrice">{formatDollarValue(String(vehicle.price))}</span>
 
-        <div className='vehicleCustomizations'>
-          <div>
+          <div className='vehicleCustomizations'>
             <div className="vehicleDetails">
+              <h4>Car Details</h4>
               <div>Mileage: {vehicle.miles} {vehicle.milesUnits}</div>
               <div>Fuel Type: {vehicle.customizations?.engine || 'Please contact dealer for specifics!'}</div>
               <div>Number of Passengers: {vehicle.customizations?.numPassengers || 'Please contact dealer for specifics!'}</div>
               <div>Colour: {vehicle.customizations?.colour || 'Please contact dealer for specifics!'}</div>
               <div>Condition: {vehicle.customizations?.condition || 'Please contact dealer for specifics!'}</div>
             </div>
-            <a href={`/vehicles/${vehicle._id}/compare`} className='btn vehicleCompare'>Compare</a>
           </div>
+          <div className='vehicleDescription'>
+            <h4>Car Description</h4>
+            <div>{vehicle.description}</div>
+          </div>
+          
+          <div className='detailsSelection'>
+            <input type='number' id='quantity' value={quantity} className='form-control detailsQuantity' 
+              step='1' min='1' max={vehicle.quantity} 
+              onChange={(e) => changeQuantity(e.target.value)} />
+            <button className='btn btn-secondary' onClick={() => addToCart()}>Add to Cart</button>
+          </div>
+          <Link to={`/vehicles/${vehicle._id}/compare`} className='btn btn-secondary vehicleCompare'>Compare</Link>
         </div>
-        <div className='vehicleDescription'>
-          <h4>Car Description</h4>
-          <div>{vehicle.description}</div>
-        </div>
-
-        <LoanCalculator propPrice={vehicle.price} />
-
-        <ReviewList vehicleId={vehicleId} />
+      </div>
+      <LoanCalculator propPrice={vehicle.price} />
     </div>
   );
 }
