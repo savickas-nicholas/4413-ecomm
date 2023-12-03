@@ -1,4 +1,6 @@
 
+import React from 'react';
+
 // prompted with 'What can I help you with today?'
 const welcomeRepo = [
   'Registration',
@@ -30,20 +32,18 @@ const questionMap = {
   'Vehicles': [
     'I would like some recommendations regarding my vehicle purchase.', 
     'I would like to see what vehicles are available.',
-    'I would like to compare multiple vehicles.',
   ]
 }
 
 const answerMap = {
-  'I would like to register an account.': 'test',
-  'I would like to login.': 'best',
-  'I would like to go to my shopping cart.': 'rest',
-  'I would like to add a vehicle to my shopping cart.': '',
-  'I would like to checkout.': '',
-  'I would like to view the status of an order.': '',
-  'I would like some recommendations regarding my vehicle purchase.': '', 
-  'I would like to see what vehicles are available.': '',
-  'I would like to compare multiple vehicles.': '',
+  'I would like to register an account.': () => <span>Please follow this <a href='/register'>link</a>.</span>,
+  'I would like to login.': () => <span>Please follow this <a href='/login'>link</a>.</span>,
+  'I would like to go to my shopping cart.': () => <span>Please follow this <a href='/cart'>link</a>.</span>,
+  'I would like to add a vehicle to my shopping cart.': () => <span>Please go to the <a href='/catalog'>catalog</a>, select a vehicle, and then click the 'Add to Cart' button.</span>,
+  'I would like to checkout.': () => <span>Please follow this <a href='/cart'>link</a> to go to your shopping cart then click the 'Proceed to Checkout' button.</span>,
+  'I would like to view the status of an order.': () => <span>Please navigate to the URL '/orders/(yourOrderNumber)'</span>,
+  'I would like some recommendations regarding my vehicle purchase.': () => <span>Please follow this <a href='/vehicles/recommendations'>link</a>.</span>, 
+  'I would like to see what vehicles are available.': () => <span>Please follow this <a href='/catalog'>link</a>.</span>, 
 };
 
 const additionalQuestionMap = {
@@ -59,10 +59,12 @@ const finalUserResponse = [
 
 export const getWelcome = () => {
   return {
-    text: 'Hello. How can I help you today?',
+    text: () => 'Hello. How can I help you today?',
     choices: welcomeRepo, 
   };
 }
+
+
 
 export const getReply = (question, choice) => {
   console.log(question);
@@ -71,7 +73,7 @@ export const getReply = (question, choice) => {
   let choices;
   const re1 = /How can I help you/;
   if(re1.test(question)) {
-    text = `What would you like to do regarding ${choice}?`;
+    text = () => `What would you like to do regarding ${choice}?`;
     choices = questionMap[choice];
   }
 
@@ -83,7 +85,7 @@ export const getReply = (question, choice) => {
 
   if(finalUserResponse.includes(choice)) {
     return {
-      text: 'No problem. How can I help you today?',
+      text: () => 'No problem. How can I help you today?',
       choices: welcomeRepo, 
     };
   }
