@@ -23,11 +23,8 @@ export default function VehicleDetails() {
     http.get(`/api/vehicles/${vehicleId}`).then((res) => {
       let vehicle = res.data.vehicle;
       setVehicle(vehicle);
-      console.log(vehicle)
     });
   }, []);
-
-
 
   const changeQuantity = (val) => {
     if(val > vehicle.quantity) {
@@ -60,11 +57,25 @@ export default function VehicleDetails() {
     }
   }
 
+  function formatDollarValue(price) {
+    const numberValue = Number(price.replace(/[^0-9.-]+/g, ''));
+    if (isNaN(numberValue)) {
+      return price;
+    }
+  
+    const formattedPrice = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(numberValue);
+  
+    return formattedPrice;
+  }
+
   return (
     <div className='flex-column-sections detailsContainer'>
       <div className='detailsHeader flex-row-spread'>
         <div className="detailsName">{vehicle.year} {vehicle.brand} {vehicle.model}</div>
-        <div className="detailsPrice">${vehicle.price}</div>
+        <div className="detailsPrice"><b>{formatDollarValue(String(vehicle.price))}</b></div>
       </div>
 
         <div className='detailsImgContainer'>
@@ -72,14 +83,6 @@ export default function VehicleDetails() {
         </div>
 
         <div className='details'>
-          <div className='customizations'>
-            {/* { vehicle.customizations && vehicle.customizations.map(c => {
-              return (
-                <div></div>
-              )
-            }) } */}
-          </div>
-          
           <div className='form-group'>
             <label htmlFor='quantity'>Quantity:</label>
             <input type='number' id='quantity' value={quantity} className='form-control' 
@@ -89,10 +92,21 @@ export default function VehicleDetails() {
           <button className='btn btn-secondary' onClick={() => addToCart()}>Add to Cart</button>
         </div>
 
-        <div className='description'>
-          <div>Mileage: {vehicle.miles} {vehicle.milesUnits}</div>
-          <div>Description: {vehicle.description}</div>
-          <a href={`/vehicles/${vehicle._id}/compare`} className='btn btn-secondary'>Compare</a>
+        <div className='vehicleCustomizations'>
+          <div>
+            <div className="vehicleDetails">
+              <div>Mileage: {vehicle.miles} {vehicle.milesUnits}</div>
+              <div>Fuel Type: {vehicle.customizations?.engine || 'Please contact dealer for specifics!'}</div>
+              <div>Number of Passengers: {vehicle.customizations?.numPassengers || 'Please contact dealer for specifics!'}</div>
+              <div>Colour: {vehicle.customizations?.colour || 'Please contact dealer for specifics!'}</div>
+              <div>Condition: {vehicle.customizations?.condition || 'Please contact dealer for specifics!'}</div>
+            </div>
+            <a href={`/vehicles/${vehicle._id}/compare`} className='btn vehicleCompare'>Compare</a>
+          </div>
+        </div>
+        <div className='vehicleDescription'>
+          <h4>Car Description</h4>
+          <div>{vehicle.description}</div>
         </div>
 
         <LoanCalculator propPrice={vehicle.price} />

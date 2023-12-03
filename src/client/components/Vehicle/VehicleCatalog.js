@@ -33,7 +33,6 @@ export default function Catalog() {
 
   // populate vehicles on page load
   useEffect(() => {
-    console.log('useeffect')
     http.get('/api/vehicles/').then((res) => {
       let vehicles = res.data.vehicles;
       setVehicles(vehicles);
