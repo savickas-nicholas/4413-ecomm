@@ -11,13 +11,14 @@ export default function ReviewForm({ addReview }) {
 
 
   const handleSubmit = () => {
-    // add error checking
-
     addReview({
       title,
       summary, 
       rating
     });
+    setSummary('');
+    setTitle('');
+    setRating(1);
   }
 
   const drawStars = () => {
@@ -52,7 +53,9 @@ export default function ReviewForm({ addReview }) {
         <input type='text' id='summary' value={summary} className='form-control'  
           onChange={(e) => setSummary(e.target.value)} />
       </div>
-      <button className='btn btn-secondary' onClick={() => handleSubmit()}>Publish</button>
+      <div className='flex-column-align-center'>
+        <button className='btn btn-success' onClick={() => handleSubmit()}>Publish</button>
+      </div>
     </div>
   );
 }

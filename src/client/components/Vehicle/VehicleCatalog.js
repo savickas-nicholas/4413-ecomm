@@ -31,6 +31,9 @@ export default function Catalog() {
   const [maxPrice, setMaxPrice] = useState(3000000);
   const [searchText, setSearchText] = useState('');
 
+  const [isDescending, setIsDescending] = useState(false);
+  const [sortField, setSortField] = useState(null);
+
   // populate vehicles on page load
   useEffect(() => {
     http.get('/api/vehicles/').then((res) => {
@@ -57,7 +60,7 @@ export default function Catalog() {
   }
 
   const filterVehicles = () => {
-    const currentFilteredVehicles = vehicles.filter(vehicle => {
+    let currentFilteredVehicles = vehicles.filter(vehicle => {
       return (
         (filteredYears.length == 0 || filteredYears.includes(vehicle.year)) &&
         (filteredBrands.length == 0 || filteredBrands.includes(vehicle.brand)) &&
@@ -68,30 +71,40 @@ export default function Catalog() {
       )
     })
 
+    if(sortField) {
+      currentFilteredVehicles = sortVehicles(currentFilteredVehicles)
+    }
+
     setFilteredVehicles(currentFilteredVehicles);
   }
 
+  // for filtering
   useEffect(() => {
     filterVehicles();
   }, [filteredYears, filteredBrands, filteredConditions, minPrice, maxPrice, searchText])
 
+  // for sorting
+  useEffect(() => {
+    let sortedVehicles = sortVehicles(filteredVehicles);
+    setFilteredVehicles(sortedVehicles);
+  }, [sortField, isDescending])
+
+
   // field --> the field to sort by 
   // descending --> boolean
-  const sortVehicles = (field, descending) => {
-    console.log('hello')
-    let arr = vehicles;
+  const sortVehicles = (vehicles) => {
+    let arr = [...vehicles];
     arr.sort((a, b) => {
-      if(a[field] < b[field]) {
+      if(a[sortField] < b[sortField]) {
         return -1;
-      } else if(a[field] > b[field]) {
+      } else if(a[sortField] > b[sortField]) {
         return 1;
       } else {
         return 0;
       }
     });
-    console.log(arr)
-    if(descending) arr.reverse();
-    setVehicles(arr);
+    if(isDescending) arr.reverse();
+    return arr;
   }
 
   const handleMinPriceChange = (event) => {
@@ -266,14 +279,14 @@ export default function Catalog() {
               <div>{filteredVehicles.length} Results</div>
               <Dropdown>
                 <Dropdown.Toggle id="dropdown-basic" className="catalog-dropdown">
-                  Sort by: 
+                  Sort by:
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => sortVehicles('price', false)} >Price: Low to High</Dropdown.Item>
-                  <Dropdown.Item onClick={() => sortVehicles('price', true)} >Price: High to Low</Dropdown.Item>
-                  <Dropdown.Item onClick={() => sortVehicles('miles', false)} >Mileage: Low to High</Dropdown.Item>
-                  <Dropdown.Item onClick={() => sortVehicles('miles', true)} >Mileage: High to Low</Dropdown.Item>
+                  <Dropdown.Item onClick={() => {setSortField('price'); setIsDescending(false);}} >Price: Low to High</Dropdown.Item>
+                  <Dropdown.Item onClick={() => {setSortField('price'); setIsDescending(true);}} >Price: High to Low</Dropdown.Item>
+                  <Dropdown.Item onClick={() => {setSortField('miles'); setIsDescending(false);}} >Mileage: Low to High</Dropdown.Item>
+                  <Dropdown.Item onClick={() => {setSortField('miles'); setIsDescending(true);}} >Mileage: High to Low</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </div>
@@ -281,7 +294,8 @@ export default function Catalog() {
             <div className='vehicleList'>
                 { filteredVehicles.map(vehicle => {
                   return (
-                    <Link to={`/vehicles/${vehicle._id}`} className='card flex-row vehicle-container element-link'>
+                    <Link to={`/vehicles/${vehicle._id}`} key={vehicle._id}
+                      className='card flex-row vehicle-container element-link'>
                       <img src={getImageByPath(vehicle.imgPath)} />
                       <div className="vehicle-info">
                         <h6><b>{vehicle.name}</b></h6>

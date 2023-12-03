@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Helmet from 'react-helmet';
 import { Outlet, useNavigate } from 'react-router-dom';
 
@@ -18,6 +18,7 @@ export default function App() {
   const [message, setMessage] = useState('');
   const [alertState, setAlertState] = useState(null);
   const [alertTimeout, setAlertTimeout] = useState(null);
+  const alertRef = useRef(null);
 
   const navigate = useNavigate();
   usageTracker();
@@ -44,11 +45,12 @@ export default function App() {
     }
     setMessage(msg);
     setAlertState(state);
+    alertRef.current.scrollIntoView({ behavior: "smooth" })
     let timeout = setTimeout(() => {
       setMessage('');
       setAlertState(null);
       setAlertTimeout(null);
-    }, 5000);
+    }, 3000);
     setAlertTimeout(timeout);
   }
 
@@ -100,7 +102,7 @@ export default function App() {
       />
       <div>
         <Header isLoggedIn={currentUser !== null} logOut={logOut}  />
-        <Alert message={message} alertState={alertState} />
+        <Alert ref={alertRef} message={message} alertState={alertState} />
       </div>
 
       <Chatbot />

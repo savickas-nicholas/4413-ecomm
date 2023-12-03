@@ -25,21 +25,40 @@ export default function LoanCalculator({ propPrice }) {
 
 
   const updatePrice = (val) => {
+    if(val < 0) {
+      val = 0;
+    }
+
     setPrice(val);
     calculatePayment();
   }
 
   const updatePeriod = (val) => {
+    if(val < 0) {
+      val = 0;
+    }
+
     setPeriod(val);
     calculatePayment();
   }
 
   const updateRate = (val) => {
+    if(val < 0) {
+      val = 0;
+    }
+
     setRate(val);
     calculatePayment();
   }
 
   const updateDownPayment = (val) => {
+    if(val < 0) {
+      val = 0;
+    }
+    if(val > price) {
+      val = price;
+    }
+
     setDownPayment(val);
     calculatePayment();
   }
@@ -69,14 +88,14 @@ export default function LoanCalculator({ propPrice }) {
           <div>
             <div class="form-group">
               <label htmlFor='price'>Price:</label>
-              <input type='number' id='price' className="form-control"
+              <input type='number' id='price' className="form-control" min='0'
                 value={price} onChange={(e) => updatePrice(e.target.value) } />
             </div>
           </div>
           <div>
             <div class="form-group">
               <label htmlFor='period'>Period (in months)</label>
-              <input type='number' id='period' className="form-control" 
+              <input type='number' id='period' className="form-control" min='0'
                 value={period} onChange={(e) => updatePeriod(e.target.value) } />
             </div>
           </div>
@@ -85,14 +104,14 @@ export default function LoanCalculator({ propPrice }) {
           <div>
             <div class="form-group">
               <label htmlFor='rate'>Interest Rate (%)</label>
-              <input type='number' id='rate' className="form-control" 
+              <input type='number' id='rate' className="form-control" min='0'
                 value={rate} onChange={(e) => updateRate(e.target.value) } />
             </div>
           </div>
           <div>
             <div class="form-group">
               <label htmlFor='downPayment'>Down Payment</label>
-              <input type='number' id='downPayment' className="form-control" 
+              <input type='number' id='downPayment' className="form-control" min='0' max={price}
                 value={downPayment} onChange={(e) => updateDownPayment(e.target.value) } />
             </div>
           </div>

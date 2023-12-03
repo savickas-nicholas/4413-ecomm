@@ -39,10 +39,15 @@ export default function ReviewList({ vehicleId }) {
 
 
   const addReview = (payload) => {
+    // add error checking
+    if(!payload.title || !payload.summary) {
+      createAlert('All fields must be filled to submit a review!', 'danger');
+      return;
+    }    
+
     payload.vehicle = vehicleId;
     payload.author = currentUser._id;
-    console.log(payload)
-
+    
     http.post(`/api/reviews/`, payload).then((res) => {
       console.log(res);
       let newReviews = reviews;
@@ -68,7 +73,8 @@ export default function ReviewList({ vehicleId }) {
               <div className='flex-column-sections'>
                 <div>{drawStars(r.rating)} <strong>{r.title}</strong></div>
                 <div>{r.summary}</div>
-                <div>Publish by: {r.author.name}</div>
+                <div>Published by: {r.author.name}</div>
+                <hr />
               </div>
             )
           })}
@@ -78,16 +84,19 @@ export default function ReviewList({ vehicleId }) {
       }
       <hr />
       { currentUser && !formActive && 
-        <button onClick={() => setFormActive(true)}>Add Review</button>
+      <div className='flex-column-align-center'>
+        <button onClick={() => setFormActive(true)} className='btn btn-secondary'>Add Review</button>
+      </div>
       } 
       { currentUser && formActive &&  
         <div>
           <ReviewForm addReview={addReview} />
           <div className='flex-column-align-center'>
-            <button onClick={() => setFormActive(false)}>Cancel</button>
+            <button onClick={() => setFormActive(false)} className='btn btn-warning'>Cancel</button>
           </div>
         </div>
       }
+      <hr/>
     </div>
   );
 }

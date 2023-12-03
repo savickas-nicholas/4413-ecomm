@@ -6,8 +6,8 @@ import { Alert } from 'react-bootstrap';
 export default function AlertComp({ message, alertState }) {  
   
   return alertState ? (
-    <div className='center'>
-      <Alert variant={alertState}>
+    <div className='full-width'>
+      <Alert variant={alertState} className='flex-column-align-center'>
         {message}
       </Alert>
     </div>

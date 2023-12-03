@@ -31,6 +31,9 @@ export default function Checkout() {
 
   const navigate = useNavigate();
 
+  const { createAlert } = useOutletContext();
+
+
   // add load state from localStorage
 
   useEffect(() => {
@@ -58,12 +61,24 @@ export default function Checkout() {
     setState('shippingInfo');
   }
 
+  // go to payment page
   const goToPayment = () => {
+    if(!street || !city || !country || !postalCode || !date) {
+      createAlert('You must fill out all fields.', 'danger');
+      return;
+    }
+
     setFullAddress(`${street}, ${city}, ${country}, ${postalCode}`);
     setState('processPayment');
   } 
 
+  // send http request to verify payment info
   const processPayment = () => {
+    if(paymentToken) {
+      setState('review');
+      return;
+    }
+
     let price = calculatePrice();
     setPrice(price);
     return http.post('/payment/validate', {
@@ -74,6 +89,7 @@ export default function Checkout() {
       setPaymentToken(res.data.token);
       setState('review');
     }).catch(err => {
+      createAlert('Payment invalid. Please try again', 'danger');
       console.log(err.message);
     })
   } 
@@ -137,14 +153,18 @@ export default function Checkout() {
   return (
     <div>
       { state === 'checkUser' && (
-        <div>
-          <button>Login</button>
-          <button onClick={() => checkoutAsGuest() }>Checkout as Guest</button>
+        <div className='flex-centered'>
+          <div className='flex-row'>
+            <a href='/login' className='btn btn-secondary'>Login</a>
+            <button onClick={() => checkoutAsGuest() } className='btn btn-secondary'>Checkout as Guest</button>
+          </div>
         </div>
       )}
       { state === 'shippingInfo' && (
         <div>
-          <div>Shipping Info</div>
+          <div className='flex-column-align-center'>
+            <h4>Shipping Info</h4>
+          </div>
           <div>
             <div className='form-group'>
               <label htmlFor='street'>Street Address: </label>
@@ -172,8 +192,10 @@ export default function Checkout() {
                 className='form-control' id='date' required></input>
             </div>
           </div>
-          <button onClick={() => goBack()}>Back</button>
-          <button onClick={() => goToPayment()}>Proceed to Payment</button>
+          <div className='flex-row'>
+            <button onClick={() => goBack()} className='btn btn-secondary'>Back</button>
+            <button onClick={() => goToPayment()} className='btn btn-secondary'>Proceed to Payment</button>
+          </div>
         </div>
       )}
       { state === 'processPayment' && (
@@ -195,9 +217,11 @@ export default function Checkout() {
               <input type='text' name='orderCardCode' value={cardCode} onChange={(e) => setCardCode(e.target.value)} 
                 className='form-control' id='cardCode' required></input>
             </div>
+          </div >
+          <div className='flex-row'>
+            <button onClick={() => goBack()} className='btn btn-secondary'>Back</button>
+            <button onClick={() => processPayment()} className='btn btn-secondary'>Process Payment</button>
           </div>
-          <button onClick={() => goBack()}>Back</button>
-          <button onClick={() => processPayment()}>Process Payment</button>
         </div>
       )}
       { state === 'review' && (
@@ -208,8 +232,10 @@ export default function Checkout() {
             <div>Delivery Date: {date}</div>
             <div>Total Price: {price}</div>
           </div>
-          <button onClick={() => goBack()}>Back</button>
-          <button onClick={() => placeOrder()}>Place Order</button>
+          <div className='flex-row'>
+            <button onClick={() => goBack()} className='btn btn-secondary'>Back</button>
+            <button onClick={() => placeOrder()} className='btn btn-secondary'>Place Order</button>
+          </div>
         </div>
       )}
     </div>
