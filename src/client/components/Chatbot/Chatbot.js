@@ -12,6 +12,7 @@ import './chatbot.scss';
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
 
+  // has format '{type, message}' where 'type' is 'bot' or 'user' 
   const [messages, setMessages] = useState([]);
   const [question, setQuestion] = useState([]);
   const [pending, setPending] = useState([]);
@@ -20,6 +21,7 @@ export default function Chatbot() {
   useEffect(() => {
     if(isOpen) {
       let res = chatService.getWelcome();
+      console.log(res)
       renderPending(res.text, res.choices);
     }
   }, [isOpen]);
@@ -38,15 +40,17 @@ export default function Chatbot() {
 
 
   const renderPending = (text, choices) => {
-    console.log(text);
-    console.log(choices);
+    console.log('text --> ', text)
     setPending(
       <div>
-        <div>{text}</div>
+        <div className='alignLeft'>
+          <span className='commentLeft'>{text()}</span>
+        </div>
+        <hr />
         { choices.map(c => {
           return (
-            <div>
-              <button className='btn btn-secondary' onClick={() => selectChoice(text, c)}>{c}</button>
+            <div className='alignRight'>
+              <button className='btn btn-light' onClick={() => selectChoice(text(), c)}>{c}</button>
             </div>
           )
         })}
@@ -57,8 +61,8 @@ export default function Chatbot() {
   const selectChoice = (question, answer) => {
     // update messages
     let arr = messages;
-    arr.push(question);
-    arr.push(answer);
+    arr.push({type: 'bot', message: question});
+    arr.push({type: 'user', message: answer});
     setMessages(arr);
 
     // get new pending
@@ -77,7 +81,9 @@ export default function Chatbot() {
           <div className='chat-body'>
             { messages.map(msg => {
               return (
-                <div>{msg}</div>
+                <div className={msg.type === 'user' ? 'alignRight' : 'alignLeft'}>
+                  <span className={msg.type === 'user' ? 'commentRight' : 'commentLeft'}>{msg.message}</span>
+                </div>
               )
             })}
             {pending}

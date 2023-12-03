@@ -7,6 +7,8 @@ import getImageByPath from '../../util/ImageService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCalendar, faGasPump, faPeopleLine, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as emptyStar } from '@fortawesome/free-regular-svg-icons';
 import './vehicle.scss';
 
 export default function Catalog() {
@@ -17,6 +19,7 @@ export default function Catalog() {
 
   const [vehicles, setVehicles] = useState([]);
   const [filteredVehicles, setFilteredVehicles] = useState([]);
+  const [reviews, setReviews] = useState({});
 
   const [brands, setBrands] = useState([]);
   const [numberOfPassengers, setNumberOfPassengers] = useState([]);
@@ -27,8 +30,9 @@ export default function Catalog() {
   const [filteredYears, setFilteredYears] = useState([]);
   const [filteredBrands, setFilteredBrands] = useState([]);
   const [filteredConditions, setFilteredConditions] = useState([]);
+  const [filteredHotDeal, setFilteredHotDeal] = useState(false);
   const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(3000000);
+  const [maxPrice, setMaxPrice] = useState(300000);
   const [searchText, setSearchText] = useState('');
 
   const [isDescending, setIsDescending] = useState(false);
@@ -43,11 +47,46 @@ export default function Catalog() {
 
       const brands = [];
       const numberOfPassengers = [];
+      const vehicleReviews = {};
+      
       vehicles.map(vehicle => {
         if (!brands.includes(vehicle.brand)) brands.push(vehicle.brand);
         if (!numberOfPassengers.includes(vehicle.customizations.numPassengers)) numberOfPassengers.push(vehicle.customizations.numPassengers);
+        
+        http.get(`/api/reviews/vehicle/${vehicle._id}`).then(res => {
+          const reviews = res.data;
+          const reviewCount = reviews.length;
+          const rating = Math.floor(reviews.reduce((sum, review) => sum + review.rating, 0) / reviewCount);
+
+          vehicleReviews[vehicle._id] = [reviewCount, rating];
+        })
       })
 
+      const getReviews = async () => {
+        const pendingReviews = vehicles.map(async (vehicle) => {
+          const reviews = await http.get(`/api/reviews/vehicle/${vehicle._id}`);
+          return {
+            id: vehicle._id,
+            reviews: reviews.data
+          };
+        })
+        const reviews = await Promise.all(pendingReviews);
+
+        const vehicleReviews = {};
+
+        reviews.forEach(reviewsData => {
+          const vehicleId = reviewsData.id;
+          const reviews = reviewsData.reviews;
+
+          const reviewCount = reviews.length;
+          const rating = Math.floor(reviews.reduce((sum, review) => sum + review.rating, 0) / reviewCount);
+          vehicleReviews[vehicleId] = [reviewCount, rating];
+        })
+
+        setReviews(vehicleReviews);
+      }
+      
+      getReviews();
       setBrands(brands);
       setNumberOfPassengers(numberOfPassengers.sort((a,b) => {return a - b}));
     });
@@ -65,6 +104,7 @@ export default function Catalog() {
         (filteredYears.length == 0 || filteredYears.includes(vehicle.year)) &&
         (filteredBrands.length == 0 || filteredBrands.includes(vehicle.brand)) &&
         (filteredConditions.length == 0 || filteredConditions.includes(vehicle.customizations.condition)) &&
+        (!filteredHotDeal || vehicle.activeDeal) &&
         (vehicle.price > minPrice) &&
         (vehicle.price < maxPrice) &&
         (searchText == '' || vehicle.name.toLowerCase().includes(searchText.toLowerCase()))
@@ -81,7 +121,7 @@ export default function Catalog() {
   // for filtering
   useEffect(() => {
     filterVehicles();
-  }, [filteredYears, filteredBrands, filteredConditions, minPrice, maxPrice, searchText])
+  }, [filteredYears, filteredBrands, filteredConditions, filteredHotDeal, minPrice, maxPrice, searchText])
 
   // for sorting
   useEffect(() => {
@@ -145,6 +185,17 @@ export default function Catalog() {
       updatedFilteredConditions.push(condition);
       setFilteredConditions(updatedFilteredConditions);
     }
+  }
+
+  const drawStars = (rating) => {
+    let stars = [];
+    for(let i = 1; i <= 5; i++) {
+      let icon = i <= rating ? faStar : emptyStar;
+      let color = i <= rating ? 'gold' : 'grey';
+      let star = <FontAwesomeIcon icon={icon} style={{color: color}} /> 
+      stars.push(star);
+    }
+    return stars;
   }
 
   return (
@@ -246,6 +297,17 @@ export default function Catalog() {
               }
             </div>
 
+            <div className='sidebar-filter'>
+              <h5>Promotion</h5>
+              <hr className="bg-dark" />
+              
+              <div className="check-input-container">
+                <input class="form-check-input sidebar-check-input" type="checkbox" value=""  id="new" onClick={() => setFilteredHotDeal(!filteredHotDeal)}></input>
+                <label for="new">Hot Deal</label>
+              </div>
+
+            </div>
+
             <h5 className="flex-centered">Price Range</h5>
             <div className='priceRange'>
               <input
@@ -298,6 +360,9 @@ export default function Catalog() {
                       className='card flex-row vehicle-container element-link'>
                       <img src={getImageByPath(vehicle.imgPath)} />
                       <div className="vehicle-info">
+                        {
+                          vehicle.activeDeal && (<div className="hotDeal">Hot Deal</div>)
+                        }
                         <h6><b>{vehicle.name}</b></h6>
                         <h4><strong>${vehicle.price}</strong></h4>
                         <div className="customizations">
@@ -319,7 +384,7 @@ export default function Catalog() {
                         </div>
                         <hr className="bg-dark" />
                         <div>
-                          Reviews
+                          <div>{drawStars(reviews[vehicle._id] ? reviews[vehicle._id][1] : 0)} <strong>{(reviews[vehicle._id] ? reviews[vehicle._id][0] : 0) + ' Reviews'}</strong></div>
                         </div>
                       </div>
                     </Link>
