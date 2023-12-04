@@ -15,6 +15,7 @@ export default function Checkout() {
   const [user, setUser] = useState();
   const [paymentToken, setPaymentToken] = useState();
   const [price, setPrice] = useState();
+  const [subtotal, setSubtotal] = useState();
   
   const [date, setDate] = useState();
   const [street, setStreet] = useState();
@@ -79,8 +80,9 @@ export default function Checkout() {
       return;
     }
 
-    let price = calculatePrice();
-    setPrice(price);
+    let { subtotal, total } = calculatePrice();
+    setSubtotal(subtotal);
+    setPrice(total);
     return http.post('/payment/validate', {
       cardNumber,
       nameOnCard: cardName,
@@ -98,9 +100,11 @@ export default function Checkout() {
   const calculatePrice = () => {
     let subtotal = 0;
     for(let v of cartService.getContents()) {
-      subtotal += v.quantity * v.item.price;  
+      let sub = v.quantity * (v.item.price - (v.item.price * v.item.discount)); ;
+      
+      subtotal += sub;
     }
-    return Number((subtotal * 1.13).toFixed(2));
+    return {subtotal, total: Number((subtotal * 1.13).toFixed(2))};
   }
 
   // convert vehicles from cartService into correct format for API
@@ -230,6 +234,7 @@ export default function Checkout() {
           <div>
             <div>Delivery Address: {fullAddress}</div>
             <div>Delivery Date: {date}</div>
+            <div>Subtotal: {subtotal}</div>
             <div>Total Price: {price}</div>
           </div>
           <div className='flex-row'>

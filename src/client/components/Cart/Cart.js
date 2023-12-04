@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 
 import * as cartService from '../Cart/CartService';
-
+import getImageByPath from '../../util/ImageService';
 
 export default function Cart() {
   const [items, setItems] = useState([]);
@@ -18,16 +18,18 @@ export default function Cart() {
 
   const handleUpdateCart = (vehicle, quantity) => {
     if(quantity < 1) {
-      createAlert("Quantity cannot be <1!", "warning");
+      createAlert("Quantity cannot be less than 1!", "warning");
       return;
     }
-    if(quantity > vehicle.quantity) {
+    else if(quantity > vehicle.quantity) {
       createAlert("Quantity cannot exceed total stock!", "warning");
       quantity = vehicle.quantity;
+    } 
+    else {
+      createAlert("Quantity updated!", "success");
     }
 
     cartService.updateCart(vehicle._id, quantity);
-    createAlert("Quantity updated!", "success");
     setItems(cartService.getContents());
   }
 
@@ -53,7 +55,7 @@ export default function Cart() {
               let vehicle = el.item;
               return (
                 <div className='cartElem flex-row'>
-                  <img src={`${vehicle.brand}_${vehicle.model}.jpg`} width='300' />
+                  <img src={getImageByPath(vehicle.imgPath)} width='300' />
                   <div className='flex-column-spread fill'>
                     <div>{`${vehicle.brand} ${vehicle.model}`}</div>
                     <div className='actionBar flex-row'>
@@ -67,7 +69,16 @@ export default function Cart() {
                     </div>
                   </div>
                   <div className='flex-centered'>
-                    <div>{vehicle.price}</div>
+                    { vehicle && vehicle.discount && vehicle.discount > 0  ?
+                      <h4><s>${vehicle.price}</s></h4>
+                      :
+                      <h4><strong>${vehicle.price}</strong></h4>
+                    }
+                    { vehicle && vehicle.discount && vehicle.discount > 0  ?
+                      <h4 className='promo'><strong>PROMO: ${vehicle.price - (vehicle.price * vehicle.discount)}</strong></h4>
+                      :
+                      <div></div>
+                    }
                   </div>
                 </div>  
               );

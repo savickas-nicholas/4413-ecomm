@@ -35,12 +35,10 @@ export default function Chatbot() {
   const closeChat = () => {
     setIsOpen(false);
     setMessages([]);
-
   }
 
 
   const renderPending = (text, choices) => {
-    console.log('text --> ', text)
     setPending(
       <div>
         <div className='alignLeft'>
@@ -50,13 +48,14 @@ export default function Chatbot() {
         { choices.map(c => {
           return (
             <div className='alignRight'>
-              <button className='btn btn-light' onClick={() => selectChoice(text(), c)}>{c}</button>
+              <button className='btn btn-light' onClick={(e) => { e.target.blur(); selectChoice(text(), c)} } >{c}</button>
             </div>
           )
         })}
       </div>
     )
   }
+  
 
   const selectChoice = (question, answer) => {
     // update messages

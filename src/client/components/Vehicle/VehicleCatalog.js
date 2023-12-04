@@ -364,7 +364,15 @@ export default function Catalog() {
                           vehicle.activeDeal && (<div className="hotDeal">Hot Deal</div>)
                         }
                         <h6><b>{vehicle.name}</b></h6>
-                        <h4><strong>${vehicle.price}</strong></h4>
+                        { vehicle && vehicle.discount && vehicle.discount > 0 ?
+                          <h4><s>${vehicle.price}</s></h4>
+                          :
+                          <h4><strong>${vehicle.price}</strong></h4>
+                        }
+                        {  vehicle && vehicle.discount && vehicle.discount > 0  ?
+                          <h4 className='promo'><strong>PROMO: ${vehicle.price - (vehicle.price * vehicle.discount)}</strong></h4>
+                          : <div></div>
+                        }
                         <div className="customizations">
                           <div className="customization">
                             <FontAwesomeIcon icon="calendar" />
@@ -373,7 +381,7 @@ export default function Catalog() {
 
                           <div className="customization">
                             <FontAwesomeIcon icon="gas-pump" />
-                            <p>{vehicle.customizations.engine}</p>
+                      <p>{vehicle.miles} {vehicle.milesUnits}</p>
                           </div>
 
                           <div className="customization">

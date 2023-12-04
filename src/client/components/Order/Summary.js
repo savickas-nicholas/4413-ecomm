@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useOutletContext, useParams } from 'react-router-dom';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-
 import http from '../../util/httpCaller';
 import getImageByPath from '../../util/ImageService';
 
@@ -19,8 +16,6 @@ export default function Summary() {
     });
   }, []);
 
-  console.log(order)
-
   return (
     <div>
       <div>Summary for order: {order._id} </div>
@@ -32,7 +27,7 @@ export default function Summary() {
             <div className="vehicle-info">
               <h6><b>{vehicle.year} {vehicle.brand} {vehicle.model}</b></h6>
             </div>
-            <img src={getImageByPath(vehicle.imgPath)} />
+            <img src={getImageByPath(vehicle.imgPath)} width='300' />
           </div>
         );  
       })}
@@ -41,7 +36,7 @@ export default function Summary() {
         <div>Status: {order.status}</div>
         <div>Delivery Address: {order.deliveryAddress}</div>
         <div>Delivery Date: {order.deliveryDate}</div>
-        <div>Total Price: {order.price}</div>
+        <div>Order Total: {order.price}</div>
       </div>
     </div>
   );

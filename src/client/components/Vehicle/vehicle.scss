@@ -5,6 +5,18 @@ $color3: #FAF0E6;
 $light: #f8f8f8;
 $dark: #E0E1E4;
 
+
+
+
+
+.discounted {
+    text-decoration: line-through;
+}
+
+.promo {
+    color: red;
+}
+
 .sidebar-container {
     height: fit-content;
     padding: 1rem;

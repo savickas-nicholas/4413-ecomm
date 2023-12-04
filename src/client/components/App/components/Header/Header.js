@@ -30,10 +30,10 @@ export default function Header({ isLoggedIn, logOut }) {
                 <Link className="nav-link" to="/catalog">Catalog <span className="sr-only">(current)</span></Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/contact">Contact</Link>
+                <Link className="nav-link">Contact</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/about">About</Link>
+                <Link className="nav-link">About</Link>
               </li>
               { isLoggedIn ? 
                   <li className="nav-item">

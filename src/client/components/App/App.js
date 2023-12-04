@@ -45,7 +45,7 @@ export default function App() {
     }
     setMessage(msg);
     setAlertState(state);
-    alertRef.current.scrollIntoView({ behavior: "smooth" })
+    //alertRef.current.scrollIntoView({ behavior: "smooth" })
     let timeout = setTimeout(() => {
       setMessage('');
       setAlertState(null);

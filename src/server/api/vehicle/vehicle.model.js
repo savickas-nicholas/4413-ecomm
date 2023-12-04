@@ -27,6 +27,7 @@ export const VehicleSchema = new Schema({
     // Chevrolet.png, Ford.png, etc. - save to a file system instead of storing image on db
     imgPath: { type: String, default: "" },
     activeDeal: { type: Boolean, default: false },
+    discount: { type: Number, default: 0 },
     customizations: {
         type: CustomizationSchema, 
         default: () => ({})

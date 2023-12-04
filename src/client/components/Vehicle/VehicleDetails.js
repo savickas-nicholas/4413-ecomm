@@ -82,7 +82,15 @@ export default function VehicleDetails() {
 
         <div className="detailsSidebar">
           <div className="detailsName">{vehicle.year} {vehicle.brand} {vehicle.model}</div>
-          <span className="detailsPrice">{formatDollarValue(String(vehicle.price))}</span>
+          { vehicle && vehicle.discount && vehicle.discount > 0  ?
+            <h4><s>${vehicle.price}</s></h4>
+            :
+            <span className="detailsPrice">{formatDollarValue(String(vehicle.price))}</span>
+          }
+          { vehicle && vehicle.discount && vehicle.discount > 0  &&
+            (<h4 className='promo'><strong>PROMO: {formatDollarValue(String(vehicle.price - (vehicle.price * vehicle.discount)))}</strong></h4>)
+          }
+  
 
           <div className='vehicleCustomizations'>
             <div className="vehicleDetails">

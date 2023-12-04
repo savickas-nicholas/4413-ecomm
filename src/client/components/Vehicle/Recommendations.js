@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router-dom';
 
 import getImageByPath from '../../util/ImageService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -67,25 +68,24 @@ export default function Recommendation() {
           <h5>Results</h5>
           { recommendations.map(vehicle => {
             return (
-              <div className='card flex-row vehicle-container'>
+              <Link to={`/vehicles/${vehicle._id}`} key={vehicle._id}
+                      className='card flex-row vehicle-container element-link'>
                 <img src={getImageByPath(vehicle.imgPath)} />
                 <div className="vehicle-info">
                   <h6><b>{vehicle.name}</b></h6>
-                  <h4><strong>${vehicle.price}</strong></h4>
+                  { vehicle && vehicle.discount && vehicle.discount > 0  ?
+                    <h4><s>${vehicle.price}</s></h4>
+                    :
+                    <h4><strong>${vehicle.price}</strong></h4>
+                  }
+                  { vehicle && vehicle.discount && vehicle.discount > 0  ?
+                    <h4 className='promo'><strong>PROMO: ${vehicle.price - (vehicle.price * vehicle.discount)}</strong></h4>
+                    :
+                    <div></div>
+                  }
                   <div className="customizations">
                     <div className="customization">
-                      <FontAwesomeIcon icon="calendar" />
                       <p>{vehicle.year}</p>
-                    </div>
-
-                    <div className="customization">
-                      <FontAwesomeIcon icon="gas-pump" />
-                      <p>{vehicle.customizations.engine}</p>
-                    </div>
-
-                    <div className="customization">
-                      <FontAwesomeIcon icon="people-line" />
-                      <p>{vehicle.customizations.numPassengers}</p>
                     </div>
                     
                   </div>
@@ -94,7 +94,7 @@ export default function Recommendation() {
                     Reviews
                   </div>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>
