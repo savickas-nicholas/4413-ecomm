@@ -22,6 +22,7 @@ import Catalog from './components/Vehicle/VehicleCatalog';
 import VehicleDetails from './components/Vehicle/VehicleDetails';
 import Recommendations from './components/Vehicle/Recommendations';
 import Comparison from './components/Vehicle/Comparison';
+import Analytics from './components/Report/Analytics';
 
 export default [
   {
@@ -67,6 +68,10 @@ export default [
       {
         path: "/orders/:orderId",
         element: <Summary />,
+      },
+      {
+        path: "/analytics",
+        element: <Analytics />,
       },
     ],
   },

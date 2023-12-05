@@ -44,3 +44,10 @@ npm run dev
 ```
 
 Afterwards, the app will be running on port 3001 on your localhost (http://localhost:3001/). Postman may be used with the appropriate test urls being available in each individual test file or in the design documentation.
+
+To access the frontend website, please use the following npm commands:
+
+```bash
+npm run build:client
+npm run start:client
+```

@@ -126,6 +126,7 @@ module.exports = function(env) {
     plugins,
     devServer: {
       static: path.join(__dirname, 'dist'),
+      historyApiFallback: true,
       port: 3000,
       open: true,
     },

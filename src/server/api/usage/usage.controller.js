@@ -1,4 +1,4 @@
-import { addNewUsageStatistic, createUsageStatistics } from "./usage.service";
+import { addNewUsageStatistic, getUsageStatistics as getUsageStatisticsService } from "./usage.service";
 
 
 const getUsageStatistics = async (req, res) => {
@@ -6,9 +6,8 @@ const getUsageStatistics = async (req, res) => {
     const {
         startDate, endDate
     } = req.body;
-
     try {
-        const statistics = await createUsageStatistics(startDate, endDate);
+        const statistics = await getUsageStatisticsService(startDate, endDate);
         return res.status(200).json({ statistics });
     } catch (err) {
         handleError(res, err);
@@ -18,11 +17,11 @@ const getUsageStatistics = async (req, res) => {
 const addUsageStatistic = async (req, res) => {
     const {
         timeSpent,
-        pageViewed
+        pageIdentifier
     } = req.body;
 
     try {
-        await addNewUsageStatistic(timeSpent, pageViewed);
+        await addNewUsageStatistic(timeSpent, pageIdentifier);
         return res.status(201).send('Usage statistic added');
     } catch (err) {
         handleError(res, err);
