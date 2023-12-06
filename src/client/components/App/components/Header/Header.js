@@ -1,7 +1,5 @@
 
 import React from 'react';
-import { useState } from 'react';
-import { InputGroup, FormControl, Button } from 'react-bootstrap';
 import logo from '../../../../assets/logo-autoshop.png';
 import './header.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,7 +7,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
-export default function Header({ isLoggedIn, logOut }) {  
+export default function Header({ isLoggedIn, role, logOut }) {  
 
   library.add(faShoppingCart)
   
@@ -30,11 +28,13 @@ export default function Header({ isLoggedIn, logOut }) {
                 <Link className="nav-link" to="/catalog">Catalog <span className="sr-only">(current)</span></Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link">Contact</Link>
-              </li>
-              <li className="nav-item">
                 <Link className="nav-link">About</Link>
               </li>
+              { isLoggedIn && role == 'admin' &&
+                <li className="nav-item">
+                  <Link className="nav-link" to="/analytics">Analytics</Link>
+                </li>
+              }
               { isLoggedIn ? 
                   <li className="nav-item">
                     <Link className="nav-link" onClick={logOut}>Log Out</Link>

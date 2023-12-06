@@ -1,0 +1,41 @@
+.reportsContainer, .dashboardContainer, .statisticContainer {
+    display: flex;
+    flex-flow: row nowrap !important;
+    gap: 1%;
+    justify-content: center;
+}
+
+.dashboardContainer {
+    margin-bottom: 5%;
+}
+
+.dashboardHeader {
+    text-align: center;
+}
+
+.dashboardStatistic {
+    display: flex;
+    flex-flow: column nowrap;
+    margin-right: 5%;
+    margin-left: 5%;
+    justify-content: center;
+}
+
+.dashboardStatistic * {
+    flex: 1;
+    padding: 3%;
+}
+
+.statisticContainer {
+    align-items: center;
+    min-width: 10vw !important;
+    max-height: 20vh !important;
+}
+
+.statistic {
+    font-size: large;
+}
+
+.statisticTitle {
+    font-size: smaller;
+}

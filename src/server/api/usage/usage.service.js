@@ -1,7 +1,7 @@
 
 import Usage from "./usage.model"
 
-const createUsageStatistics = async (startDateText, endDateText) => {
+const getUsageStatistics = async (startDateText, endDateText) => {
     const startDateTimestamp = Date.parse(startDateText);
     const startDate = new Date(startDateTimestamp);
 
@@ -19,11 +19,11 @@ const addNewUsageStatistic = async (timeSpent, pageViewed) => {
     const usage = {
         date: new Date(),
         timeSpent: parseInt(timeSpent),
-        pageViewed
+        pageViewed: String(pageViewed)
     };
 
     await Usage.create(usage)
     return;
 }
 
-export { createUsageStatistics, addNewUsageStatistic };
+export { getUsageStatistics, addNewUsageStatistic };
