@@ -8,6 +8,8 @@ import getImageByPath from '../../util/ImageService';
 export default function Cart() {
   const [items, setItems] = useState([]);
 
+  const cartDetails = cartService.calculatePrice();
+
   const { createAlert } = useOutletContext();
 
   // load cart items on load
@@ -44,7 +46,6 @@ export default function Cart() {
     createAlert("Cart cleared!", "success");
     setItems(cartService.getContents());
   }
-
 
   return (
     <div className='cartContainer'>
@@ -89,6 +90,9 @@ export default function Cart() {
           </div>
           <div className='flex-centered'>
             <a href='/checkout' className='btn btn-primary' style={{color: 'white'}}>Proceed to Checkout</a>
+          </div>
+          <div className='flex-centered'>
+            <span>{`Subtotal (${cartDetails.count} items): ${cartDetails.subtotal}`}</span>
           </div>
         </div>
       : <div>Your cart is empty!</div>}

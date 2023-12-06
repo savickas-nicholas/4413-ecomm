@@ -306,6 +306,13 @@ i:hover {
   gap: 10px;
 }
 
+.flex-row-wrap {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 // for elements on opposite sides of the container
 .flex-row-spread {
   display: flex;
@@ -359,3 +366,17 @@ i:hover {
 }
 
 
+.gap-25 {
+  gap: 25px;
+}
+
+
+
+
+
+// other 
+
+
+.padding-10 {
+  padding: 10px;
+}

@@ -7,6 +7,19 @@ export const getContents = () => {
   return contents;
 }
 
+export const calculatePrice = () => {
+  let subtotal = 0;
+  let count = 0;
+  for(let v of getContents()) {
+    let sub = v.quantity * (v.item.price - (v.item.price * v.item.discount));
+    subtotal += sub;
+    count += Number(v.quantity);
+  }
+  return { subtotal, total: Number((subtotal * 1.13).toFixed(2)), count };
+}
+
+
+
 // get current quantity for specific vehicle
 export const getCurrentQuantity = (id) => {
   let quantity = 0;

@@ -16,7 +16,7 @@ export default function RegistrationPage() {
   
   const [errors, setErrors] = useState(null);
 
-  const { logIn } = useOutletContext();
+  const { logIn, createAlert } = useOutletContext();
 
   const navigate = useNavigate();
 
@@ -56,6 +56,10 @@ export default function RegistrationPage() {
       navigate('/', { replace: true });
     }).catch(err => {
       console.log('error', err.response);
+      let msg = err.response.data.errors.email.message;
+      if(msg) {
+        createAlert(msg, 'danger');
+      }
     })
   };
 

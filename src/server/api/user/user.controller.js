@@ -47,7 +47,11 @@ export const addUser = async (req, res) => {
     let newUser = _.merge(userObj, req.body);
     let user = await User.create(newUser);
     let token = signToken(user._id);
-    return res.status(201).json({ token, user });
+    return res.status(201).json({ token, user: {
+      name: user.name,
+      role: user.role,
+      _id: user._id
+    } });
   } catch(err) {
     return handleError(res, err);
   }

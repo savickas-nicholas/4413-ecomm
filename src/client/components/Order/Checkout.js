@@ -6,7 +6,10 @@ import { useOutletContext, useNavigate } from 'react-router-dom';
 import * as cartService from '../Cart/CartService';
 
 import http from '../../util/httpCaller';
-import { processPayment } from '../../../server/payment/payment.controller';
+import getImageByPath from '../../util/ImageService';
+
+import './order.scss';
+
 
 // states -> checkUser, shippingInfo, processPayment, review
 export default function Checkout() {
@@ -57,6 +60,10 @@ export default function Checkout() {
     }
   }
 
+  const continueAsUser = () => {
+    setState('shippingInfo');
+  }
+
   const checkoutAsGuest = () => {
     setUser({ name: 'Guest' });
     setState('shippingInfo');
@@ -80,7 +87,7 @@ export default function Checkout() {
       return;
     }
 
-    let { subtotal, total } = calculatePrice();
+    let { subtotal, total } = cartService.calculatePrice();
     setSubtotal(subtotal);
     setPrice(total);
     return http.post('/payment/validate', {
@@ -90,22 +97,12 @@ export default function Checkout() {
     }).then(res => {
       setPaymentToken(res.data.token);
       setState('review');
+      createAlert('Payment verified!', 'success');
     }).catch(err => {
-      createAlert('Payment invalid. Please try again', 'danger');
+      createAlert('Payment invalid. Please try again.', 'danger');
       console.log(err.message);
     })
   } 
-
-  // calculate final price
-  const calculatePrice = () => {
-    let subtotal = 0;
-    for(let v of cartService.getContents()) {
-      let sub = v.quantity * (v.item.price - (v.item.price * v.item.discount)); ;
-      
-      subtotal += sub;
-    }
-    return {subtotal, total: Number((subtotal * 1.13).toFixed(2))};
-  }
 
   // convert vehicles from cartService into correct format for API
   const extractVehicles = () => {
@@ -159,7 +156,11 @@ export default function Checkout() {
       { state === 'checkUser' && (
         <div className='flex-centered'>
           <div className='flex-row'>
-            <a href='/login' className='btn btn-secondary'>Login</a>
+            { !currentUser ? 
+              <a href='/login' className='btn btn-secondary'>Login</a>
+              :
+              <button onClick={() => continueAsUser() } className='btn btn-secondary'>Checkout as {currentUser.name}</button>
+            }
             <button onClick={() => checkoutAsGuest() } className='btn btn-secondary'>Checkout as Guest</button>
           </div>
         </div>
@@ -229,17 +230,35 @@ export default function Checkout() {
         </div>
       )}
       { state === 'review' && (
-        <div>
-          <div>Order Summary for {user.name}</div>
-          <div>
+        <div className='flex-column gap-25'>
+          <div className='border padding-10 rounded'>Order Summary for {user.name}</div>
+          <div className='border padding-10 rounded'>
+            <div className='flex-row-wrap'>
+              {cartService.getContents().map(el => {
+                let vehicle = el.item;
+                console.log(el)
+                console.log(vehicle)
+                return (
+                  <div className='flex-column-align-center'>
+                    <img src={getImageByPath(vehicle.imgPath)} width='300' />
+                    <div>
+                      <b>{vehicle.year} {vehicle.brand} {vehicle.model}</b>
+                    </div>
+                  </div>
+                );  
+              })}
+            </div>
+          </div>
+          <div className='border padding-10 rounded'>
             <div>Delivery Address: {fullAddress}</div>
             <div>Delivery Date: {date}</div>
             <div>Subtotal: {subtotal}</div>
+            <div>Taxes: {price - subtotal}</div>
             <div>Total Price: {price}</div>
           </div>
           <div className='flex-row'>
             <button onClick={() => goBack()} className='btn btn-secondary'>Back</button>
-            <button onClick={() => placeOrder()} className='btn btn-secondary'>Place Order</button>
+            <button onClick={() => placeOrder()} className='btn btn-secondary'>Confirm Order</button>
           </div>
         </div>
       )}

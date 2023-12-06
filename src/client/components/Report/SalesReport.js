@@ -92,19 +92,19 @@ export default function SalesReport() {
                     </div>
                     <div className="card statisticContainer">
                         <FontAwesomeIcon icon={faSackDollar} /> 
-                        <span className="statistic">${getTotalRevenue()} <span className="statisticTitle">Total Revenue</span></span>
+                        <span className="statistic">${Math.round(getTotalRevenue())} <span className="statisticTitle">Total Revenue</span></span>
                     </div>
                     <div className="card statisticContainer">
                         <FontAwesomeIcon icon={faHandHoldingDollar} /> 
-                        <span className="statistic">${getAverageRevenue()} <span className="statisticTitle">Average Purchase Value</span></span>
+                        <span className="statistic">${Math.round(getAverageRevenue())} <span className="statisticTitle">Average Purchase Value</span></span>
                     </div>
                     <div className="card statisticContainer">
                         <FontAwesomeIcon icon={faTags} /> 
-                        <span className="statistic">${getMinPrice()} <span className="statisticTitle">Minimum Purchase Value</span></span>
+                        <span className="statistic">${Math.round(getMinPrice())} <span className="statisticTitle">Minimum Purchase Value</span></span>
                     </div>
                     <div className="card statisticContainer">
                         <FontAwesomeIcon icon={faTags} /> 
-                        <span className="statistic">${getMaxPrice()} <span className="statisticTitle">Maximum Purchase Value</span></span>
+                        <span className="statistic">${Math.round(getMaxPrice())} <span className="statisticTitle">Maximum Purchase Value</span></span>
                     </div>
                 </div>
                 <div>

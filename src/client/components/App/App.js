@@ -72,7 +72,7 @@ export default function App() {
     navigate('/', { replace: true }); // change to last page
   }
   
-
+  console.log(currentUser)
 
   return (
     <React.Fragment>
