@@ -8,8 +8,6 @@ import * as cartService from '../Cart/CartService';
 import http from '../../util/httpCaller';
 import getImageByPath from '../../util/ImageService';
 
-import './order.scss';
-
 
 // states -> checkUser, shippingInfo, processPayment, review
 export default function Checkout() {
