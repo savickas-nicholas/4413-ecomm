@@ -300,6 +300,22 @@ i:hover {
   }
 }
 
+
+.flex-content-sidebar {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+
+  .content {
+    flex: 8;
+  }
+
+  .sidebar {
+    flex: 2;
+  }
+}
+
+
 .flex-row {
   display: flex;
   flex-direction: row;

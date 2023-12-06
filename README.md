@@ -1,5 +1,10 @@
 # AutoShop
 
+## Cloud Deployment
+
+Found at https://www.savickasn.com
+Please login using email 'admin@example.com' and password '*admin1' to access an admin account that can view the Analytics panel. 
+
 ## Prerequisites
 
 Before running the application, make sure you have the following installed on your machine:

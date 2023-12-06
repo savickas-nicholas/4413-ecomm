@@ -75,7 +75,12 @@ export default function Chatbot() {
       { isOpen && (
         <div className='chat-container'>
           <div className='chat-header'>
-            <div className='close-chat-button'><FontAwesomeIcon icon={faX} size={'1x'} onClick={() => closeChat()} /></div>
+            <div className='flex-column-align-center'>
+              <span>Chatbot</span>
+            </div>
+            <div className='close-chat-button flex-centered'>
+              <FontAwesomeIcon icon={faX} size={'1x'} onClick={() => closeChat()} />
+            </div>
           </div>
           <div className='chat-body'>
             { messages.map(msg => {

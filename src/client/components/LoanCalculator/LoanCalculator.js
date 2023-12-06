@@ -116,8 +116,9 @@ export default function LoanCalculator({ propPrice }) {
             </div>
           </div>
         </div>
-        <div className='flex-centered fill'>
-          <div>Monthly Payment: ${ monthlyPayment || 'NA' }</div>
+        <div className='flex-centered fill border rounded'>
+          <div className='fw-bold'>Monthly Payment</div>
+            <div>${ monthlyPayment || 'NA' }</div>
         </div>
       </div>
     </div>

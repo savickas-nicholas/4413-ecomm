@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as emptyStar } from '@fortawesome/free-regular-svg-icons';
 
-export default function ReviewForm({ addReview }) {
+export default function ReviewForm({ addReview, setFormActive }) {
   const [title, setTitle] = useState('');
   const [summary, setSummary] = useState('');
   const [rating, setRating] = useState(1);
@@ -34,7 +34,7 @@ export default function ReviewForm({ addReview }) {
   }
 
   return (
-    <div>
+    <div className='border rounded padding-10'>
       <div className='form-group'>
         <label htmlFor='rating'>Rating:</label>
         <div>
@@ -54,7 +54,10 @@ export default function ReviewForm({ addReview }) {
           onChange={(e) => setSummary(e.target.value)} />
       </div>
       <div className='flex-column-align-center'>
-        <button className='btn btn-success' onClick={() => handleSubmit()}>Publish</button>
+        <div className='flex-row'>
+          <button className='btn btn-success' onClick={() => handleSubmit()}>Publish</button>
+          <button className='btn btn-warning' onClick={() => setFormActive(false)}>Cancel</button>
+        </div>
       </div>
     </div>
   );

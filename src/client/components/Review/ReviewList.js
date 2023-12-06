@@ -89,10 +89,7 @@ export default function ReviewList({ vehicleId }) {
       } 
       { currentUser && formActive &&  
         <div>
-          <ReviewForm addReview={addReview} />
-          <div className='flex-column-align-center'>
-            <button onClick={() => setFormActive(false)} className='btn btn-warning'>Cancel</button>
-          </div>
+          <ReviewForm addReview={addReview} setFormActive={setFormActive} />
         </div>
       }
     </div>
